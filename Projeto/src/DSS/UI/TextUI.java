@@ -1,5 +1,7 @@
 package DSS.UI;
 import DSS.GestEquipamentos.Equipamento;
+import DSS.GestEquipamentos.GestEquipamentosFacade;
+import DSS.GestEquipamentos.IGestEquipamentosFacade;
 import DSS.GestFuncionarios.Funcionario;
 import DSS.GestFuncionarios.GestFuncionariosFacade;
 import DSS.GestFuncionarios.IGestFuncioariosFacade;
@@ -14,12 +16,14 @@ public class TextUI {
     private IGestFuncioariosFacade funcionarios;
     private IGestGestoresFacade gestores;
     private IGestTecnicosFacade tecnicos;
+    private IGestEquipamentosFacade equipamentos;
     private Scanner scanner;
 
     public TextUI() {
         this.funcionarios = new GestFuncionariosFacade();
         this.gestores = new GestGestoresFacade();
         this.tecnicos = new GestTecnicosFacade();
+        this.equipamentos = new GestEquipamentosFacade();
         scanner = new Scanner(System.in);
     }
 
@@ -154,6 +158,10 @@ public class TextUI {
             }
             else
                 eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), false);
+            this.equipamentos.insereEquipamento(eq);
+        }
+        else {
+            System.out.println("Erro: O funcionário deverá estar registado para poder inserir um dispositivo.");
         }
     }
 

@@ -3,7 +3,7 @@ package DSS.GestEquipamentos;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GestEquipamentosFacade {
+public class GestEquipamentosFacade implements IGestEquipamentosFacade {
     Map<Integer, Equipamento> equipamentos;
 
     public GestEquipamentosFacade (){
