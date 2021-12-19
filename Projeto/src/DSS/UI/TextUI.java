@@ -18,12 +18,14 @@ public class TextUI {
     private IGestTecnicosFacade tecnicos;
     private IGestEquipamentosFacade equipamentos;
     private Scanner scanner;
+    private String username;
 
     public TextUI() {
         this.funcionarios = new GestFuncionariosFacade();
         this.gestores = new GestGestoresFacade();
         this.tecnicos = new GestTecnicosFacade();
         this.equipamentos = new GestEquipamentosFacade();
+        this.username = "";
         scanner = new Scanner(System.in);
     }
 
@@ -114,6 +116,8 @@ public class TextUI {
         String password = scanner.nextLine();
         if (this.funcionarios.autenticaFuncionario(username, password)) {
             System.out.println("Funcionário autenticado com sucesso.");
+            this.username = username;
+            menuFuncionario();
         } else
             System.out.println("Credenciais inseridas são inválidas.");
     }
@@ -124,8 +128,11 @@ public class TextUI {
         String username = scanner.nextLine();
         System.out.println("Por favor insira a sua password: ");
         String password = scanner.nextLine();
-        if (this.gestores.autenticaGestor(username, password))
+        if (this.gestores.autenticaGestor(username, password)) {
             System.out.println("Gestor autenticado com sucesso.");
+            this.username = username;
+            menuGestor();
+        }
         else
             System.out.println("Credenciais inseridas são inválidas.");
     }
@@ -136,17 +143,18 @@ public class TextUI {
         String username = scanner.nextLine();
         System.out.println("Por favor insira a sua password: ");
         String password = scanner.nextLine();
-        if (this.tecnicos.autenticaTecnico(username, password))
+        if (this.tecnicos.autenticaTecnico(username, password)) {
             System.out.println("Técnico autenticado com sucesso.");
+            this.username = username;
+            menuTecnico();
+        }
         else
             System.out.println("As credenciais inseridas são inválidas.");
     }
 
     public void registarRecDispositivo (){
         Equipamento eq;
-        System.out.println("Insira o username do funcionário: ");
-        String username = scanner.nextLine();
-        if (this.funcionarios.isAutenticado(username)) {
+        if (this.funcionarios.isAutenticado(this.username)) {
             System.out.println("Insira o nif do cliente:");
             int nif = scanner.nextInt();
             scanner.nextLine();
