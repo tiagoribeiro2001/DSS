@@ -117,7 +117,7 @@ public class TextUI {
         if (this.funcionarios.autenticaFuncionario(username, password)) {
             System.out.println("Funcionário autenticado com sucesso.");
             this.username = username;
-            menuFuncionario();
+            this.menuFuncionario();
         } else
             System.out.println("Credenciais inseridas são inválidas.");
     }
@@ -131,7 +131,7 @@ public class TextUI {
         if (this.gestores.autenticaGestor(username, password)) {
             System.out.println("Gestor autenticado com sucesso.");
             this.username = username;
-            menuGestor();
+            this.menuGestor();
         }
         else
             System.out.println("Credenciais inseridas são inválidas.");
@@ -146,7 +146,7 @@ public class TextUI {
         if (this.tecnicos.autenticaTecnico(username, password)) {
             System.out.println("Técnico autenticado com sucesso.");
             this.username = username;
-            menuTecnico();
+            this.menuTecnico();
         }
         else
             System.out.println("As credenciais inseridas são inválidas.");
