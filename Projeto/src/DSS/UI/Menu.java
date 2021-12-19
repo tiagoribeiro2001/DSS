@@ -17,7 +17,6 @@ public class Menu {
     }
 
     private static Scanner is = new Scanner(System.in);
-    private String titulo;                  // Titulo do menu (opcional)
     private List<String> opcoes;            // Lista de opções
     private List<PreCondition> disponivel;  // Lista de pré-condições
     private List<Handler> handlers;         // Lista de handlers
@@ -77,7 +76,6 @@ public class Menu {
 
     /** Apresentar o menu */
     private void show() {
-        System.out.println("\n *** "+this.titulo+" *** ");
         for (int i=0; i<this.opcoes.size(); i++) {
             System.out.print(i+1);
             System.out.print(" - ");
