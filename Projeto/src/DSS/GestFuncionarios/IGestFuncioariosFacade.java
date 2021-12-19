@@ -7,6 +7,8 @@ public interface IGestFuncioariosFacade {
 
     boolean autenticaFuncionario (String username, String password);
 
+    boolean isAutenticado (String username);
+
     Map<String, Funcionario> getFuncionarios();
 
 }

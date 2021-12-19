@@ -24,6 +24,9 @@ public class GestFuncionariosFacade implements IGestFuncioariosFacade {
         return false;
     }
 
+    public boolean isAutenticado (String username) {
+        return this.funcionarios.get(username).isAutenticado();
+    }
     //Devolve todos os funcionários registados no sistema.
     public Map<String,Funcionario> getFuncionarios() {
         Map<String, Funcionario> newFun = new HashMap<String, Funcionario>();

@@ -1,4 +1,5 @@
 package DSS.UI;
+import DSS.GestEquipamentos.Equipamento;
 import DSS.GestFuncionarios.Funcionario;
 import DSS.GestFuncionarios.GestFuncionariosFacade;
 import DSS.GestFuncionarios.IGestFuncioariosFacade;
@@ -51,7 +52,7 @@ public class TextUI {
                 "Regista entrega de dispositivo",
                 "Registar pagamento de reparação"
         });
-        menu.setHandler(1, this::regisarRecDispositivo);
+        menu.setHandler(1, this::registarRecDispositivo);
         menu.setHandler(2, this::registarPedidoOrcamento);
         menu.setHandler(3, this::registarEntregaDispositivo);
         menu.setHandler(4, this::registarPagamentoReparacao);
@@ -137,5 +138,25 @@ public class TextUI {
             System.out.println("As credenciais inseridas são inválidas.");
     }
 
-    public void registarRecDispositivo {...} //completar... etc
+    public void registarRecDispositivo (){
+        Equipamento eq;
+        System.out.println("Insira o username do funcionário: ");
+        String username = scanner.nextLine();
+        if (this.funcionarios.isAutenticado(username)) {
+            System.out.println("Insira o nif do cliente:");
+            int nif = scanner.nextInt();
+            scanner.nextLine();
+            System.out.println("Pretende que seja realizado o Serviço Expresso?\n1- Sim\n2- Não");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+            if (opcao == 1) {
+                eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), true);
+            }
+            else
+                eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), false);
+        }
+    }
+
+
+
 }

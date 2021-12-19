@@ -1,18 +1,47 @@
 package DSS.GestTecnicos;
 
-import DSS.Equipamento;
+import DSS.GestEquipamentos.Equipamento;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Tecnico {
 
     private String username;
     private String password;
     private boolean autenticado;
-    private List<Equipamento> orcamentos;
-    private List<Equipamento> orcamentos_para_reparar;
     private List<Equipamento> equipamentos_reparados;
 
+    public Tecnico (String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.autenticado = false;
+        this.equipamentos_reparados = new ArrayList<>();
+    }
+
+    public Tecnico (Tecnico t) {
+        this.username = t.getUsername();
+        this.autenticado = t.isAutenticado();
+        this.password = t.getPassword();
+        this.equipamentos_reparados = t.getEquipamentosReparados();
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    private String getPassword() {
+        return this.password;
+    }
+
+    public boolean isAutenticado() {
+        return this.autenticado;
+    }
+
+    public List<Equipamento> getEquipamentosReparados() {
+        return this.equipamentos_reparados.stream().map(Equipamento::clone).collect(Collectors.toList());
+    }
 
     public boolean autenticacao (String password) {
         if(this.password.equals(password)) {
@@ -33,4 +62,6 @@ public class Tecnico {
     public void equipamentoReparado(Equipamento e){
         //Tecnico indica que o equipamento está repado
     }
+
+    public Tecnico clone() {return new Tecnico(this);}
 }
