@@ -33,6 +33,14 @@ public class Equipamento {
     public boolean isServicoExpresso(){return this.servicoExpresso;}
     public String getContacto() {return this.contacto;}
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Equipamento {\n");
+        sb.append("\tNIF cliente - ").append(nifCliente).append("\n");
+        sb.append("\tContacto - ").append(contacto).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
 
 
     public Equipamento clone () {return new Equipamento(this);}

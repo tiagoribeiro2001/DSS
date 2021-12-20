@@ -28,7 +28,7 @@ public class Gestor {
         return this.password;
     }
 
-    private boolean isAutenticado() {
+    public boolean isAutenticado() {
         return this.autenticado;
     }
 

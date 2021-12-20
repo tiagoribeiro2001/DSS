@@ -48,7 +48,7 @@ public class TextUI {
     public void run() {
         System.out.println("Bem vindo ao Sistema de Reparações de dispositivos!");
         this.menuPrincipal();
-        System.out.println("Obrigado pela sua preferência!");
+        System.out.println("Até à próxima!");
     }
 
     private void menuPrincipal() {
@@ -310,7 +310,23 @@ public class TextUI {
         }
     }
     // ------------------- Auxiliares menu gestor --------------------//
-
+    public void acederListaReparacoes () {
+        if (this.gestores.isAutenticado(this.username)) {
+            System.out.println("Lista de Técnicos: ");
+            System.out.println(this.tecnicos.toString());
+            System.out.println("Por favor insira o username do técnico que pretende avaliar: ");
+            String username = scanner.nextLine();
+            if (this.tecnicos.existe(username)) {
+                System.out.println(this.tecnicos.getEquipamentosReparados(username).toString());
+            }
+            else {
+                System.out.println("Não existe nenhum técnico com esse username.");
+            }
+        }
+        else {
+            System.out.println("Erro: O gestor deverá estar autenticado.");
+        }
+    }
 
 
 }

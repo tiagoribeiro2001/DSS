@@ -1,6 +1,9 @@
 package DSS.GestTecnicos;
 
+import DSS.GestEquipamentos.Equipamento;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GestTecnicosFacade implements IGestTecnicosFacade {
@@ -21,6 +24,14 @@ public class GestTecnicosFacade implements IGestTecnicosFacade {
             return this.tecnicos.get(username).autenticacao(password);
         }
         return false;
+    }
+
+    public boolean existe(String username) {
+        return this.tecnicos.containsKey(username);
+    }
+
+    public List<Equipamento> getEquipamentosReparados(String username) {
+        return this.tecnicos.get(username).getEquipamentosReparados();
     }
 
     public boolean isAutenticado (String username) {
