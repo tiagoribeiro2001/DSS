@@ -18,6 +18,7 @@ import DSS.GestPedidosOrcamento.PedidoOrcamento;
 import DSS.GestTecnicos.GestTecnicosFacade;
 import DSS.GestTecnicos.IGestTecnicosFacade;
 import DSS.GestOrcamentos.Orcamento;
+import DSS.GestTecnicos.Tecnico;
 
 import java.util.Scanner;
 
@@ -274,7 +275,7 @@ public class TextUI {
         if (this.tecnicos.isAutenticado(this.username)) {
             PedidoOrcamento po = this.pedidosOrcamento.obtemPedido();
             System.out.println(po.getProblema());
-            System.out.println("Com base no prolema descrito, qual será o orçamento atribuido?");
+            System.out.println("Com base no problema descrito, qual será o orçamento atribuido?");
             int valor = scanner.nextInt();scanner.nextLine();
             Orcamento orc = new Orcamento(po.getEquipamento(), valor);
             this.orcamentos.addOrcamento(orc);
@@ -286,7 +287,28 @@ public class TextUI {
         }
     }
 
-
+    private void registarReparacao () {
+        if (this.tecnicos.isAutenticado(this.username)) {
+            Orcamento o = this.orcamentos.obtemOrcamentoMaisAntigo();
+            int nif = o.getNif();
+            System.out.println("Próxima reparação: " + nif);
+            System.out.println("A reparação foi efetuada?\n1- Sim\n2- Não");
+            int opcao = scanner.nextInt();scanner.nextLine();
+            /*Caso de ter sido efetuada a reparação, esta é removida da lista de
+             orcamentos e o equipamento é adicionado à lista de equipamentos reparados pelo técnico.
+             */
+            if (opcao == 1) {
+                Equipamento equip = o.getEquipamento();
+                Tecnico tec = this.tecnicos.getTecnico(this.username);
+                tec.addEquipamentosReparados(equip);
+                this.orcamentos.removeOrcamentoMaisAntigo();
+                //Talvez implementar para enviar email para o cliente.
+            }
+        }
+        else {
+            System.out.println("Erro: O Técnico deverá estar registado.");
+        }
+    }
     // ------------------- Auxiliares menu gestor --------------------//
 
 

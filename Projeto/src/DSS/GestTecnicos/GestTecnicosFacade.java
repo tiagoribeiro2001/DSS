@@ -11,6 +11,10 @@ public class GestTecnicosFacade implements IGestTecnicosFacade {
         this.tecnicos = new HashMap<>();
     }
 
+    public Tecnico getTecnico(String username){
+        return this.tecnicos.get(username);
+    }
+
     //Autentica um Técnico.
     public boolean autenticaTecnico(String username, String password) {
         if (this.tecnicos.containsKey(username)) {

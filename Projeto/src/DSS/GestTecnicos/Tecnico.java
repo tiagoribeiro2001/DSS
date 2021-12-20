@@ -63,5 +63,9 @@ public class Tecnico {
         //Tecnico indica que o equipamento está repado
     }
 
+    public void addEquipamentosReparados(Equipamento e){
+        this.equipamentos_reparados.add(e);
+    }
+
     public Tecnico clone() {return new Tecnico(this);}
 }
