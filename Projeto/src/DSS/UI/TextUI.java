@@ -114,7 +114,7 @@ public class TextUI {
     /*Registo de utilizador (inicialmente é automaticamente registado como Funcionário de balcão. O gestor depois trata
     de conceder as autorizações de gestor / técnico).
     */
-    public void registarUser() {
+    private void registarUser() {
         System.out.println("Por favor insira um nome de utilizador: ");
         String username = scanner.nextLine();
         System.out.println("Por favor insita uma password:");
@@ -124,7 +124,7 @@ public class TextUI {
     }
 
     //Autenticar funcionário.
-    public void autenticarFuncionario() {
+    private void autenticarFuncionario() {
         System.out.println("Por favor indique o seu username: ");
         String username = scanner.nextLine();
         System.out.println("Por favor insira a sua password: ");
@@ -138,7 +138,7 @@ public class TextUI {
     }
 
     //Autenticar Gestor.
-    public void autenticarGestor () {
+    private void autenticarGestor () {
         System.out.println("Por favor indique o seu username: ");
         String username = scanner.nextLine();
         System.out.println("Por favor insira a sua password: ");
@@ -153,7 +153,7 @@ public class TextUI {
     }
 
     //Autenticar Técnico.
-     public void autenticarTecnico() {
+     private void autenticarTecnico() {
         System.out.println("Por favor indique o seu username: ");
         String username = scanner.nextLine();
         System.out.println("Por favor insira a sua password: ");
@@ -169,7 +169,7 @@ public class TextUI {
 
     // ----------------- Auxiliares menu funcionario -----------------------//
     //Regista o recebimento do dspositivo
-    public void registarRecDispositivo (){
+    private void registarRecDispositivo (){
         Equipamento eq;
         //Verifica que o funcionário está autenticado.
         if (this.funcionarios.isAutenticado(this.username)) {
@@ -194,7 +194,7 @@ public class TextUI {
     }
 
     //Regista um pedido de orçamento.
-    public void registarPedidoOrcamento () {
+    private void registarPedidoOrcamento () {
         Orcamento oc;
         //Verifica que o funcionário está autenticado.
         if (this.funcionarios.isAutenticado(this.username)) {
@@ -218,7 +218,7 @@ public class TextUI {
     }
 
     //Regista entrega do dispositivo.
-    public void registarEntregaDispositivo() {
+    private void registarEntregaDispositivo() {
         //Verifica que o funcionario esta autenticado.
         if(this.funcionarios.isAutenticado(this.username)) {
             System.out.println("Por favor insira o nif do cliente:");
@@ -236,7 +236,7 @@ public class TextUI {
             System.out.println("Erro: O funcionário deverá estar registado.");
     }
 
-    public void registarPagamentoReparacao () {
+    private void registarPagamentoReparacao () {
         //Verifica que o funcionario esta autenticado.
         if (this.funcionarios.isAutenticado(this.username)) {
             System.out.println("Por favor insira o nif do cliente: ");
@@ -270,7 +270,7 @@ public class TextUI {
 
     //------------------ Auxiliares menu tecnico -----------------------//
 
-    public void registarOrcamento () {
+    private void registarOrcamento () {
         if (this.tecnicos.isAutenticado(this.username)) {
             PedidoOrcamento po = this.pedidosOrcamento.obtemPedido();
             System.out.println(po.getProblema());
