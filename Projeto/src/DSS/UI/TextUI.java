@@ -4,7 +4,7 @@ import DSS.GestEquipamentos.GestEquipamentosFacade;
 import DSS.GestEquipamentos.IGestEquipamentosFacade;
 import DSS.GestFuncionarios.Funcionario;
 import DSS.GestFuncionarios.GestFuncionariosFacade;
-import DSS.GestFuncionarios.IGestFuncioariosFacade;
+import DSS.GestFuncionarios.IGestFuncionariosFacade;
 import DSS.GestGestores.GestGestoresFacade;
 import DSS.GestGestores.IGestGestoresFacade;
 import DSS.GestOrcamentos.GestOrcamentosFacade;
@@ -18,12 +18,11 @@ import DSS.GestPedidosOrcamento.PedidoOrcamento;
 import DSS.GestTecnicos.GestTecnicosFacade;
 import DSS.GestTecnicos.IGestTecnicosFacade;
 import DSS.GestOrcamentos.Orcamento;
-import DSS.GestTecnicos.Tecnico;
 
 import java.util.Scanner;
 
 public class TextUI {
-    private IGestFuncioariosFacade funcionarios;
+    private IGestFuncionariosFacade funcionarios;
     private IGestGestoresFacade gestores;
     private IGestTecnicosFacade tecnicos;
     private IGestEquipamentosFacade equipamentos;
@@ -188,6 +187,7 @@ public class TextUI {
             else
                 eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, false);
             this.equipamentos.insereEquipamento(eq);
+            this.funcionarios.incrementaEntregas(this.username);
         }
         else {
             System.out.println("Erro: O funcionário deverá estar registado para poder inserir um dispositivo.");
@@ -229,6 +229,7 @@ public class TextUI {
                 //Remove o equipamento do sistema (Já que foi entregue).
                 this.equipamentos.removeEquipamento(nif);
                 System.out.println("Registo de entrega do equipamento efetuado com sucesso.");
+                this.funcionarios.incrementaEntregas(this.username);
             }
             else
                 System.out.println("Erro: Não existe nenhum registo desse equipamento.");
@@ -294,13 +295,11 @@ public class TextUI {
             System.out.println("Próxima reparação: " + nif);
             System.out.println("A reparação foi efetuada?\n1- Sim\n2- Não");
             int opcao = scanner.nextInt();scanner.nextLine();
-            /*Caso de ter sido efetuada a reparação, esta é removida da lista de
-             orcamentos e o equipamento é adicionado à lista de equipamentos reparados pelo técnico.
-             */
             if (opcao == 1) {
+                // Adiciona o equipamento à lsita de equipamentos reparados pelo técnico
                 Equipamento equip = o.getEquipamento();
-                Tecnico tec = this.tecnicos.getTecnico(this.username);
-                tec.addEquipamentosReparados(equip);
+                this.tecnicos.adicionaEquipamentosReparados(this.username, equip);
+                // Remove o orçamento do equipamento já reparado da lista de orçamentos
                 this.orcamentos.removeOrcamentoMaisAntigo();
                 //Talvez implementar para enviar email para o cliente.
             }
@@ -328,5 +327,14 @@ public class TextUI {
         }
     }
 
+    public void acederListaRececoesEntregas () {
+        if (this.gestores.isAutenticado(this.username)) {
+            System.out.println("Lista de Funcionários: ");
+            System.out.println(this.funcionarios.toString());
+        }
+        else {
+            System.out.println("Erro: O gestor deverá estar autenticado.");
+        }
+    }
 
 }

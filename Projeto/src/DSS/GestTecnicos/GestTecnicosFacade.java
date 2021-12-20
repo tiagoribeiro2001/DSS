@@ -37,4 +37,8 @@ public class GestTecnicosFacade implements IGestTecnicosFacade {
     public boolean isAutenticado (String username) {
         return this.tecnicos.get(username).isAutenticado();
     }
+
+    public void adicionaEquipamentosReparados(String username, Equipamento equip){
+        this.tecnicos.get(username).addEquipamentosReparados(equip);
+    }
 }

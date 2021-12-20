@@ -10,4 +10,5 @@ public interface IGestTecnicosFacade {
     boolean isAutenticado (String username);
     boolean existe(String username);
     List<Equipamento> getEquipamentosReparados(String username);
+    public void adicionaEquipamentosReparados(String username, Equipamento equip);
 }
