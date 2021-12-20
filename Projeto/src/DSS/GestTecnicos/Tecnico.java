@@ -67,5 +67,12 @@ public class Tecnico {
         this.equipamentos_reparados.add(e);
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Funcionario {\n");
+        sb.append("\tUsername - ").append(username).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
     public Tecnico clone() {return new Tecnico(this);}
 }

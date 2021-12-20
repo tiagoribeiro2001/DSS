@@ -308,8 +308,16 @@ public class TextUI {
             System.out.println("Erro: O Técnico deverá estar registado.");
         }
     }
+
+    private void registarPlanoTrabalhos () {
+
+    }
+
+    private void registarReparacaoUrgente () {
+
+    }
     // ------------------- Auxiliares menu gestor --------------------//
-    public void acederListaReparacoes () {
+    private void acederListaReparacoes () {
         if (this.gestores.isAutenticado(this.username)) {
             System.out.println("Lista de Técnicos: ");
             System.out.println(this.tecnicos.toString());
@@ -327,7 +335,7 @@ public class TextUI {
         }
     }
 
-    public void acederListaRececoesEntregas () {
+    private void acederListaRececoesEntregas () {
         if (this.gestores.isAutenticado(this.username)) {
             System.out.println("Lista de Funcionários: ");
             System.out.println(this.funcionarios.toString());
@@ -335,6 +343,10 @@ public class TextUI {
         else {
             System.out.println("Erro: O gestor deverá estar autenticado.");
         }
+    }
+
+    private void acederListaIntervencoes () {
+
     }
 
 }
