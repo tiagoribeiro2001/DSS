@@ -18,4 +18,8 @@ public class GestTecnicosFacade implements IGestTecnicosFacade {
         }
         return false;
     }
+
+    public boolean isAutenticado (String username) {
+        return this.tecnicos.get(username).isAutenticado();
+    }
 }

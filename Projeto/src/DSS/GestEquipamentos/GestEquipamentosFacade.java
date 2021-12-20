@@ -14,5 +14,17 @@ public class GestEquipamentosFacade implements IGestEquipamentosFacade {
         this.equipamentos.put(e.getNifCliente(), e.clone());
     }
 
+    public Equipamento obtemEquipamento (int nif) {
+        return this.equipamentos.get(nif).clone();
+    }
+
+    public boolean existeEquipamento(int nif) {
+        return this.equipamentos.containsKey(nif);
+    }
+
+    public void removeEquipamento(int nif) {
+        this.equipamentos.remove(nif);
+    }
+
 
 }

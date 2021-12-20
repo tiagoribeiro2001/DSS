@@ -7,8 +7,17 @@ import DSS.GestFuncionarios.GestFuncionariosFacade;
 import DSS.GestFuncionarios.IGestFuncioariosFacade;
 import DSS.GestGestores.GestGestoresFacade;
 import DSS.GestGestores.IGestGestoresFacade;
+import DSS.GestOrcamentos.GestOrcamentosFacade;
+import DSS.GestOrcamentos.IGestOrcamentosFacade;
+import DSS.GestPagamentos.GestPagamentosFacade;
+import DSS.GestPagamentos.IGestPagamentosFacade;
+import DSS.GestPagamentos.Pagamento;
+import DSS.GestPedidosOrcamento.GestPedidosOrcamentoFacade;
+import DSS.GestPedidosOrcamento.IGestPedidosOrcamentoFacade;
+import DSS.GestPedidosOrcamento.PedidoOrcamento;
 import DSS.GestTecnicos.GestTecnicosFacade;
 import DSS.GestTecnicos.IGestTecnicosFacade;
+import DSS.GestOrcamentos.Orcamento;
 
 import java.util.Scanner;
 
@@ -17,6 +26,9 @@ public class TextUI {
     private IGestGestoresFacade gestores;
     private IGestTecnicosFacade tecnicos;
     private IGestEquipamentosFacade equipamentos;
+    private IGestOrcamentosFacade orcamentos;
+    private IGestPedidosOrcamentoFacade pedidosOrcamento;
+    private IGestPagamentosFacade pagamentos;
     private Scanner scanner;
     private String username;
 
@@ -25,6 +37,9 @@ public class TextUI {
         this.gestores = new GestGestoresFacade();
         this.tecnicos = new GestTecnicosFacade();
         this.equipamentos = new GestEquipamentosFacade();
+        this.orcamentos = new GestOrcamentosFacade();
+        this.pedidosOrcamento = new GestPedidosOrcamentoFacade();
+        this.pagamentos = new GestPagamentosFacade();
         this.username = "";
         scanner = new Scanner(System.in);
     }
@@ -152,26 +167,127 @@ public class TextUI {
             System.out.println("As credenciais inseridas são inválidas.");
     }
 
+    // ----------------- Auxiliares menu funcionario -----------------------//
+    //Regista o recebimento do dspositivo
     public void registarRecDispositivo (){
         Equipamento eq;
+        //Verifica que o funcionário está autenticado.
         if (this.funcionarios.isAutenticado(this.username)) {
             System.out.println("Insira o nif do cliente:");
             int nif = scanner.nextInt();
             scanner.nextLine();
+            System.out.println("Insira o email do cliente:");
+            String email = scanner.nextLine();
             System.out.println("Pretende que seja realizado o Serviço Expresso?\n1- Sim\n2- Não");
             int opcao = scanner.nextInt();
             scanner.nextLine();
             if (opcao == 1) {
-                eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), true);
+                eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, true);
             }
             else
-                eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), false);
+                eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, false);
             this.equipamentos.insereEquipamento(eq);
         }
         else {
             System.out.println("Erro: O funcionário deverá estar registado para poder inserir um dispositivo.");
         }
     }
+
+    //Regista um pedido de orçamento.
+    public void registarPedidoOrcamento () {
+        Orcamento oc;
+        //Verifica que o funcionário está autenticado.
+        if (this.funcionarios.isAutenticado(this.username)) {
+            System.out.println("Insira o nif do proprietário do orçamento.");
+            int nif = scanner.nextInt();
+            scanner.nextLine();
+            //Verifica se existe algum equipamento pertencente a esse cliente registado no sistema.
+            if (this.equipamentos.existeEquipamento(nif)) {
+                System.out.println("Insira o problema descrito pelo cliente:");
+                String problema = scanner.nextLine();
+                Equipamento eq = equipamentos.obtemEquipamento(nif);
+                PedidoOrcamento po = new PedidoOrcamento(eq.clone(), problema);
+                this.pedidosOrcamento.addPedidoOrcamento(po.clone());
+                System.out.println("Pedido de orçamento foi registado.");
+            }
+            else {
+                System.out.println("Erro: O equipamento deverá ser registado antes do seu respetivo pedido de orçamento.");
+            }
+        }
+        System.out.println("Erro: O funcionário deverá estar autenticado.");
+    }
+
+    //Regista entrega do dispositivo.
+    public void registarEntregaDispositivo() {
+        //Verifica que o funcionario esta autenticado.
+        if(this.funcionarios.isAutenticado(this.username)) {
+            System.out.println("Por favor insira o nif do cliente:");
+            int nif = scanner.nextInt();scanner.nextLine();
+            //verifica que o equipamento esta registado no sistema.
+            if (this.equipamentos.existeEquipamento(nif)){
+                //Remove o equipamento do sistema (Já que foi entregue).
+                this.equipamentos.removeEquipamento(nif);
+                System.out.println("Registo de entrega do equipamento efetuado com sucesso.");
+            }
+            else
+                System.out.println("Erro: Não existe nenhum registo desse equipamento.");
+        }
+        else
+            System.out.println("Erro: O funcionário deverá estar registado.");
+    }
+
+    public void registarPagamentoReparacao () {
+        //Verifica que o funcionario esta autenticado.
+        if (this.funcionarios.isAutenticado(this.username)) {
+            System.out.println("Por favor insira o nif do cliente: ");
+            int nif = scanner.nextInt();scanner.nextLine();
+            //Verifica que o equipamento esta registado no sistema.
+            if (this.equipamentos.existeEquipamento(nif)) {
+                //Verifica que existe um orçamento para o dispositivo registado no sistema.
+                if (this.orcamentos.existeOrcamento(nif)) {
+                    //Obtem o valor a pagar
+                    int valorApagar = this.orcamentos.obtemOrcamento(nif);
+                    System.out.println("O valor a pagar é " + valorApagar + ".");
+                    //Pede confirmação de pagamento
+                    System.out.println("O pagamento foi efetuado?\n1- Sim\n2- Não");
+                    int opcao = scanner.nextInt();scanner.nextLine();
+                    //Caso de ter sido efetuado pagamento, este fica registado.
+                    if (opcao == 1) {
+                        Pagamento pagamento = new Pagamento(nif, valorApagar, this.equipamentos.obtemEquipamento(nif).clone());
+                        this.pagamentos.addPagamento(pagamento);
+                    }
+                }
+                else {
+                    System.out.println("Não existe nenhum orçamento para este dispositivo.");
+                }
+            }
+            else
+                System.out.println("Este equipamento não está registado no sistema.");
+        }
+        else
+            System.out.println("Erro: O funcionário deverá estar registado.");
+    }
+
+    //------------------ Auxiliares menu tecnico -----------------------//
+
+    public void registarOrcamento () {
+        if (this.tecnicos.isAutenticado(this.username)) {
+            PedidoOrcamento po = this.pedidosOrcamento.obtemPedido();
+            System.out.println(po.getProblema());
+            System.out.println("Com base no prolema descrito, qual será o orçamento atribuido?");
+            int valor = scanner.nextInt();scanner.nextLine();
+            Orcamento orc = new Orcamento(po.getEquipamento(), valor);
+            this.orcamentos.addOrcamento(orc);
+            System.out.println("Orçamento registado com sucesso.");
+            //Talvez implementar para enviar email para o cliente.
+        }
+        else {
+            System.out.println("Erro: O Técnico deverá estar registado.");
+        }
+    }
+
+
+    // ------------------- Auxiliares menu gestor --------------------//
 
 
 
