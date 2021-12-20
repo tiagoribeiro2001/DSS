@@ -315,9 +315,9 @@ public class TextUI {
             System.out.println("Lista de Técnicos: ");
             System.out.println(this.tecnicos.toString());
             System.out.println("Por favor insira o username do técnico que pretende avaliar: ");
-            String username = scanner.nextLine();
-            if (this.tecnicos.existe(username)) {
-                System.out.println(this.tecnicos.getEquipamentosReparados(username).toString());
+            String usernameT = scanner.nextLine();
+            if (this.tecnicos.existe(usernameT)) {
+                System.out.println(this.tecnicos.getEquipamentosReparados(usernameT).toString());
             }
             else {
                 System.out.println("Não existe nenhum técnico com esse username.");
