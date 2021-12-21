@@ -2,14 +2,14 @@ package DSS.GestPlanosTrabalho;
 
 public class PassosTrabalho {
     String passo;
-    int custo;
+    double custo;
 
     public PassosTrabalho () {
         this.passo = "";
         this.custo = 0;
     }
 
-    public PassosTrabalho (String passo, int custo) {
+    public PassosTrabalho (String passo, double custo) {
         this.passo = passo;
         this.custo = custo;
     }
@@ -20,13 +20,12 @@ public class PassosTrabalho {
     }
 
     public String getPasso() { return this.passo;}
-    public int getCusto () { return this.custo;}
+    public double getCusto () { return this.custo;}
 
     public String toString() {
-        StringBuilder sb = new StringBuilder("{\n");
-        sb.append("\tPasso: ").append(this.passo).append("\n");
-        sb.append("\tCusto: ").append(this.custo).append("\n");
-        sb.append("}\n");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Passo: ").append(this.passo).append("\n");
+        sb.append("Custo: ").append(this.custo).append("\n");
         return sb.toString();
     }
 

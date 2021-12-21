@@ -32,7 +32,7 @@ public class GestOrcamentosFacade implements IGestOrcamentosFacade{
         return this.orcamentos.containsKey(nif);
     }
 
-    public int obtemOrcamento (int nif) {
+    public double obtemOrcamento (int nif) {
         return this.orcamentos.get(nif).getValor();
     }
 }

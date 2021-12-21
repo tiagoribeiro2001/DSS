@@ -5,7 +5,7 @@ import DSS.GestEquipamentos.Equipamento;
 public class Orcamento {
     private int nif;
     private Equipamento equipamento;
-    private int valor;
+    private double valor;
     //private boolean aceite;
 
     public Orcamento (int nif, Equipamento eq, int valor) {
@@ -25,7 +25,7 @@ public class Orcamento {
         this.equipamento = eq;
     }
 
-    public void setValor (int valor) {
+    public void setValor (double valor) {
         this.valor = valor;
     }
 
@@ -43,7 +43,7 @@ public class Orcamento {
         return this.equipamento.clone();
     }
 
-    public int getValor() {
+    public double getValor() {
         return this.valor;
     }
 

@@ -12,12 +12,16 @@ public class Tecnico {
     private String password;
     private boolean autenticado;
     private List<Equipamento> equipamentos_reparados;
+    private List<Equipamento> equipamentos_reparados_expresso;
+    private int tempoGasto;
 
     public Tecnico (String username, String password) {
         this.username = username;
         this.password = password;
         this.autenticado = false;
         this.equipamentos_reparados = new ArrayList<>();
+        this.equipamentos_reparados_expresso = new ArrayList<>();
+        this.tempoGasto = 0;
     }
 
     public Tecnico (Tecnico t) {
@@ -25,6 +29,8 @@ public class Tecnico {
         this.autenticado = t.isAutenticado();
         this.password = t.getPassword();
         this.equipamentos_reparados = t.getEquipamentosReparados();
+        this.equipamentos_reparados_expresso = t.getEquipamentosReparadosExpresso();
+        this.tempoGasto = t.getTempoGasto();
     }
 
     public String getUsername() {
@@ -39,9 +45,19 @@ public class Tecnico {
         return this.autenticado;
     }
 
+    public int getTempoGasto() {
+        return this.tempoGasto;
+    }
+
     public List<Equipamento> getEquipamentosReparados() {
         return this.equipamentos_reparados.stream().map(Equipamento::clone).collect(Collectors.toList());
     }
+
+    public List<Equipamento> getEquipamentosReparadosExpresso() {
+        return this.equipamentos_reparados_expresso.stream().map(Equipamento::clone).collect(Collectors.toList());
+    }
+
+    public void incrementaTempoGasto(int tempo) {this.tempoGasto += tempo;}
 
     public boolean autenticacao (String password) {
         if(this.password.equals(password)) {
@@ -51,21 +67,11 @@ public class Tecnico {
         return false;
     }
 
-    public void calOrcamento(Equipamento e){
-        //Calcula o orcamento do equipamento
-    }
-
-    public void give_orcamento(Equipamento e){
-        //Tecnico atribui um orçamento ao equipamento
-    }
-
-    public void equipamentoReparado(Equipamento e){
-        //Tecnico indica que o equipamento está repado
-    }
-
     public void addEquipamentosReparados(Equipamento e){
         this.equipamentos_reparados.add(e);
     }
+
+    public void addEquipamentosReparadosExpresso(Equipamento eq) {this.equipamentos_reparados_expresso.add(eq);}
 
     public String toString() {
         StringBuilder sb = new StringBuilder("Funcionario {\n");

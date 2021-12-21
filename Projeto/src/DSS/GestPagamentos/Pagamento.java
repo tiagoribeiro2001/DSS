@@ -5,10 +5,10 @@ import DSS.GestOrcamentos.Orcamento;
 
 public class Pagamento {
     private int nif;
-    private int valor;
+    private double valor;
     private Equipamento eq;
 
-    public Pagamento (int nif, int valor, Equipamento eq) {
+    public Pagamento (int nif, double valor, Equipamento eq) {
         this.nif = nif;
         this.valor = valor;
         this.eq = eq;
@@ -23,7 +23,7 @@ public class Pagamento {
     public int getNif() {
         return this.nif;
     }
-    public int getValor() {
+    public double getValor() {
         return valor;
     }
 

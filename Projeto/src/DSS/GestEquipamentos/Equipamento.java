@@ -1,7 +1,6 @@
 package DSS.GestEquipamentos;
 
 import DSS.GestFuncionarios.Funcionario;
-import DSS.GestTecnicos.Tecnico;
 
 public class Equipamento {
 
@@ -10,6 +9,7 @@ public class Equipamento {
     private Funcionario funcionario;
     private boolean repaired;
     private boolean servicoExpresso;
+    private double custoReparacao;
 
     public Equipamento (int nif, Funcionario fun, String cont, boolean expresso) {
         this.nifCliente = nif;
@@ -17,6 +17,7 @@ public class Equipamento {
         this.contacto = cont;
         this.repaired = false;
         this.servicoExpresso = expresso;
+        this.custoReparacao = 0;
     }
 
     public Equipamento(Equipamento e) {
@@ -25,6 +26,7 @@ public class Equipamento {
         this.contacto = e.getContacto();
         this.repaired = e.isRepaired();
         this.servicoExpresso = e.isServicoExpresso();
+        this.custoReparacao = e.getCustoReparacao();
     }
 
     public int getNifCliente(){return this.nifCliente;}
@@ -32,6 +34,11 @@ public class Equipamento {
     public boolean isRepaired() {return this.repaired;}
     public boolean isServicoExpresso(){return this.servicoExpresso;}
     public String getContacto() {return this.contacto;}
+    public double getCustoReparacao () {return this.custoReparacao;}
+
+    public void adicionaCustoReparacao(double custo) {
+        this.custoReparacao += custo;
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder("Equipamento {\n");

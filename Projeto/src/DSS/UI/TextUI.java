@@ -6,6 +6,7 @@ import DSS.GestFuncionarios.Funcionario;
 import DSS.GestFuncionarios.GestFuncionariosFacade;
 import DSS.GestFuncionarios.IGestFuncionariosFacade;
 import DSS.GestGestores.GestGestoresFacade;
+import DSS.GestGestores.Gestor;
 import DSS.GestGestores.IGestGestoresFacade;
 import DSS.GestOrcamentos.GestOrcamentosFacade;
 import DSS.GestOrcamentos.IGestOrcamentosFacade;
@@ -21,6 +22,7 @@ import DSS.GestPlanosTrabalho.PlanoTrabalho;
 import DSS.GestTecnicos.GestTecnicosFacade;
 import DSS.GestTecnicos.IGestTecnicosFacade;
 import DSS.GestOrcamentos.Orcamento;
+import DSS.GestTecnicos.Tecnico;
 
 import java.util.Scanner;
 
@@ -35,6 +37,10 @@ public class TextUI {
     private IGestPlanosTrabalhoFacade planosTrabalho;
     private Scanner scanner;
     private String username;
+
+    private Tecnico tec = new Tecnico("tec", "tec");
+    private Gestor gest = new Gestor("ges", "ges");
+    private Funcionario fun = new Funcionario("fun", "fun");
 
     public TextUI() {
         this.funcionarios = new GestFuncionariosFacade();
@@ -68,20 +74,22 @@ public class TextUI {
         menu.setHandler(3, this::autenticarGestor);
         menu.setHandler(4, this::autenticarTecnico);
 
+        this.funcionarios.registaFuncionario(this.fun);
+        this.tecnicos.registaTecnico(this.tec);
+        this.gestores.registaGestor(this.gest);
+
         menu.run();
     }
 
     private void menuFuncionario() {
         Menu menu = new Menu(new String[]{
                 "Registar recebimento de dispositivo",
-                "Regista pedido de orçamento",
                 "Regista entrega de dispositivo",
                 "Registar pagamento de reparação"
         });
         menu.setHandler(1, this::registarRecDispositivo);
-        menu.setHandler(2, this::registarPedidoOrcamento);
-        menu.setHandler(3, this::registarEntregaDispositivo);
-        menu.setHandler(4, this::registarPagamentoReparacao);
+        menu.setHandler(2, this::registarEntregaDispositivo);
+        menu.setHandler(3, this::registarPagamentoReparacao);
 
         menu.run();
     }
@@ -90,13 +98,11 @@ public class TextUI {
         Menu menu = new Menu(new String[]{
                 "Registar orçamento no sistema",
                 "Registar reparação no sistema",
-                "Registar plano de trabalhos",
                 "Registar reparação urgente"
         });
         menu.setHandler(1, this::registarOrcamento);
         menu.setHandler(2, this::registarReparacao);
-        menu.setHandler(3, this::registarPlanoTrabalhos);
-        menu.setHandler(4, this::registarReparacaoUrgente);
+        menu.setHandler(3, this::registarReparacaoUrgente);
 
         menu.run();
     }
@@ -122,7 +128,7 @@ public class TextUI {
     private void registarUser() {
         System.out.println("Por favor insira um nome de utilizador: ");
         String username = scanner.nextLine();
-        System.out.println("Por favor insita uma password:");
+        System.out.println("Por favor insira uma password:");
         String password = scanner.nextLine();
         Funcionario novo = new Funcionario(username, password);
         funcionarios.registaFuncionario(novo);
@@ -187,12 +193,24 @@ public class TextUI {
             int opcao = scanner.nextInt();
             scanner.nextLine();
             if (opcao == 1) {
-                eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, true);
+                if (this.equipamentos.isNaoReparadosEmpty()) {
+                    eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, true);
+                    this.equipamentos.registaEquipamentoExpresso(eq);
+                    this.funcionarios.incrementaEntregas(this.username);
+                    System.out.println("Pedido Expresso realizado com sucesso.");
+                }
+                else
+                    System.out.println("Erro: Não há disponibilidade para realizar o serviço expresso.");
             }
-            else
+            else if (opcao == 2) {
                 eq = new Equipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, false);
-            this.equipamentos.insereEquipamento(eq);
-            this.funcionarios.incrementaEntregas(this.username);
+                this.equipamentos.registaEquipamento(eq);
+                this.funcionarios.incrementaEntregas(this.username);
+                this.registarPedidoOrcamento(nif);
+            }
+            else {
+                System.out.println("Erro: Opção inválida.");
+            }
         }
         else {
             System.out.println("Erro: O funcionário deverá estar registado para poder inserir um dispositivo.");
@@ -200,13 +218,10 @@ public class TextUI {
     }
 
     //Regista um pedido de orçamento.
-    private void registarPedidoOrcamento () {
+    private void registarPedidoOrcamento (int nif) {
         Orcamento oc;
         //Verifica que o funcionário está autenticado.
         if (this.funcionarios.isAutenticado(this.username)) {
-            System.out.println("Insira o nif do proprietário do orçamento.");
-            int nif = scanner.nextInt();
-            scanner.nextLine();
             //Verifica se existe algum equipamento pertencente a esse cliente registado no sistema.
             if (this.equipamentos.existeEquipamento(nif)) {
                 System.out.println("Insira o problema descrito pelo cliente:");
@@ -220,7 +235,8 @@ public class TextUI {
                 System.out.println("Erro: O equipamento deverá ser registado antes do seu respetivo pedido de orçamento.");
             }
         }
-        System.out.println("Erro: O funcionário deverá estar autenticado.");
+        else
+            System.out.println("Erro: O funcionário deverá estar autenticado.");
     }
 
     //Regista entrega do dispositivo.
@@ -251,9 +267,9 @@ public class TextUI {
             //Verifica que o equipamento esta registado no sistema.
             if (this.equipamentos.existeEquipamento(nif)) {
                 //Verifica que existe um orçamento para o dispositivo registado no sistema.
-                if (this.orcamentos.existeOrcamento(nif)) {
+                if (this.equipamentos.estaReparado(nif)) {
                     //Obtem o valor a pagar
-                    int valorApagar = this.orcamentos.obtemOrcamento(nif);
+                    double valorApagar = this.equipamentos.getCustoReparacaoTotal(nif);
                     System.out.println("O valor a pagar é " + valorApagar + ".");
                     //Pede confirmação de pagamento
                     System.out.println("O pagamento foi efetuado?\n1- Sim\n2- Não");
@@ -265,7 +281,7 @@ public class TextUI {
                     }
                 }
                 else {
-                    System.out.println("Não existe nenhum orçamento para este dispositivo.");
+                    System.out.println("Este dispositivo nao foi reparado.");
                 }
             }
             else
@@ -285,7 +301,7 @@ public class TextUI {
             res = scanner.nextLine();
             if (!res.equals("sair")) {
                 System.out.println("Insira um custo associado a dito passo:");
-                int custo = scanner.nextInt();
+                double custo = scanner.nextDouble();
                 scanner.nextLine();
                 pt.adicionaPasso(res, custo);
             }
@@ -300,6 +316,7 @@ public class TextUI {
             PlanoTrabalho pt = menuOrcamento(po.getEquipamento().clone());
             pt.registaOrcamento();
             this.orcamentos.addOrcamento(pt.getOrcamento());
+            this.equipamentos.insereCustoReparacao(po.getEquipamento().getNifCliente(), pt.getOrcamento().getValor());
             this.planosTrabalho.adicionaPlano(pt);
             System.out.println("Orçamento registado com sucesso.");
             //Talvez implementar para enviar email para o cliente.
@@ -311,27 +328,45 @@ public class TextUI {
 
     private void registarReparacao () {
         if (this.tecnicos.isAutenticado(this.username)) {
-            Orcamento o = this.orcamentos.obtemOrcamentoMaisAntigo();
-            int nif = o.getNif();
-            System.out.println("Próxima reparação: " + nif);
-            System.out.println("A reparação foi efetuada?\n1- Sim\n2- Não");
-            int opcao = scanner.nextInt();scanner.nextLine();
-            if (opcao == 1) {
-                // Adiciona o equipamento à lsita de equipamentos reparados pelo técnico
-                Equipamento equip = o.getEquipamento();
-                this.tecnicos.adicionaEquipamentosReparados(this.username, equip);
-                // Remove o orçamento do equipamento já reparado da lista de orçamentos
-                this.orcamentos.removeOrcamentoMaisAntigo();
-                //Talvez implementar para enviar email para o cliente.
+            if (!this.equipamentos.isNaoReparadosEmpty()) {
+                double custoReal = 0.0;
+                Orcamento o = this.orcamentos.obtemOrcamentoMaisAntigo();
+                int nif = o.getNif();
+                System.out.println("\n-------------------//-----------------------");
+                System.out.println("REPARAÇÃO DE DISPOSITIVO\n");
+                System.out.println("Identificador do dispositivo: " + nif);
+                System.out.println("Plano de trabalhos:");
+                PlanoTrabalho pt = this.planosTrabalho.obterPlano(nif);
+                for (int i = 0; i < pt.tamanhoPlano(); i++) {
+                    System.out.println("\n--------------------//----------------------");
+                    System.out.println(pt.getPlano().get(i).toString());
+                    System.out.println("Indique o tempo gasto para a tarefa (em minutos): ");
+                    int gasto = scanner.nextInt();scanner.nextLine();
+                    this.tecnicos.incrementaTempoGasto(this.username, gasto);
+                    System.out.println("Insira o custo atribuido à realização deste passo: ");
+                    double temp = scanner.nextDouble(); scanner.nextLine();
+                    custoReal += temp;
+                }
+                System.out.println("\n--------------------//----------------------");
+                if (custoReal > o.getValor()*1.20)
+                    System.out.println("Custo de reparação real foi superior ao orçamento.");
+            }
+            else if (!this.equipamentos.isExpressoEmpty()) {
+                Equipamento e = this.equipamentos.getExpressoMaisAntigo();
+                System.out.println("[Serviço Expresso]: Insira o preço pelo serviço realizado: ");
+                double preco = scanner.nextDouble(); scanner.nextLine();
+                this.equipamentos.insereCustoReparacao(e.getNifCliente(), preco);
+                this.tecnicos.adicionaEquipamentosReparadosExpresso(this.username, e.clone());
+                this.equipamentos.consertaEquipamento(e.getNifCliente());
+                System.out.println("Serviço de reparação expresso registado com sucesso.");
+            }
+            else {
+                System.out.println("Erro: Não há equipamentos para reparar.");
             }
         }
         else {
             System.out.println("Erro: O Técnico deverá estar registado.");
         }
-    }
-
-    private void registarPlanoTrabalhos () {
-
     }
 
     private void registarReparacaoUrgente () {

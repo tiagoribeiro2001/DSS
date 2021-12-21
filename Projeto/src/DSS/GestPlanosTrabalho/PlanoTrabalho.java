@@ -21,11 +21,11 @@ public class PlanoTrabalho {
         this.orc = pt.getOrcamento();
     }
 
-    public int getCustoTotal() {
-        return this.plano.stream().mapToInt(PassosTrabalho::getCusto).sum();
+    public double getCustoTotal() {
+        return this.plano.stream().mapToDouble(PassosTrabalho::getCusto).sum();
     }
 
-    public void adicionaPasso (String passo, int custo) {
+    public void adicionaPasso (String passo, double custo) {
         PassosTrabalho pt = new PassosTrabalho(passo, custo);
         this.plano.add(pt.clone());
     }
@@ -36,6 +36,17 @@ public class PlanoTrabalho {
     public Orcamento getOrcamento() { return this.orc.clone(); }
 
 
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder("{\n");
+        this.plano.forEach(j -> sb.append(j.toString()));
+        sb.append("}\n");
+        return sb.toString();
+    }
+
+    public int tamanhoPlano() {
+        return this.plano.size();
+    }
     public PlanoTrabalho clone() { return new PlanoTrabalho(this); }
 
 }

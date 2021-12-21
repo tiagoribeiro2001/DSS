@@ -17,6 +17,10 @@ public class GestGestoresFacade implements IGestGestoresFacade{
         return false;
     }
 
+    public void registaGestor(Gestor g) {
+        this.gestores.put(g.getUsername(), g.clone());
+    }
+
     public String toString() {
         int i = 1;
         StringBuilder sb = new StringBuilder();
