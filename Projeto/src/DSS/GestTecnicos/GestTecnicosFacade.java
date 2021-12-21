@@ -1,6 +1,7 @@
 package DSS.GestTecnicos;
 
 import DSS.GestEquipamentos.Equipamento;
+import DSS.GestPlanosTrabalho.PlanoTrabalho;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,23 @@ public class GestTecnicosFacade implements IGestTecnicosFacade {
         this.tecnicos.get(username).incrementaTempoGasto(tempo);
     }
 
+    public void incrementaDesvioTempoGasto (String username, int tempo) {
+        this.tecnicos.get(username).incrementaDesvioTempoGasto(tempo);
+    }
+
     public void adicionaEquipamentosReparadosExpresso(String username, Equipamento eq) {
         this.tecnicos.get(username).addEquipamentosReparadosExpresso(eq);
     }
+
+    public String imprimeReparacoesInfo() {
+        StringBuilder sb = new StringBuilder();
+        for (Tecnico tec : tecnicos.values()){
+            sb.append("Username: ").append(tec.getUsername()).append("\n");
+            sb.append("Duração média das reparações: ").append(tec.tempoMedioReparacao()).append(" minutos\n");
+            sb.append("Desvio médio em relação à duração prevista: ").append(tec.desvioTempoMedioReparacao()).append(" minutos\n");
+        }
+        return sb.toString();
+    }
+
+
 }

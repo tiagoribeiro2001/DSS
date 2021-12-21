@@ -21,4 +21,8 @@ public class GestPedidosOrcamentoFacade implements IGestPedidosOrcamentoFacade{
         return this.pedidosOrcamento.getFirst();
     }
 
+    public boolean isPedidosOrcamentoEmpty() {
+        return this.pedidosOrcamento.isEmpty();
+    }
+
 }

@@ -40,12 +40,12 @@ public class Funcionario {
     }
 
     //Obtem o número de recepcoes de equipamentos feitos pelo funcionario
-    private int getRecepcoes(){
+    public int getRecepcoes(){
         return this.recepcoes;
     }
 
     //Obtem o número de entregas de equipamentos feitos pelo funcionario
-    private int getEntregas(){
+    public int getEntregas(){
         return this.entregas;
     }
 

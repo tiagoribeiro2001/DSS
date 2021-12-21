@@ -25,8 +25,8 @@ public class PlanoTrabalho {
         return this.plano.stream().mapToDouble(PassosTrabalho::getCusto).sum();
     }
 
-    public void adicionaPasso (String passo, double custo) {
-        PassosTrabalho pt = new PassosTrabalho(passo, custo);
+    public void adicionaPasso (String passo, double custo, int tempo) {
+        PassosTrabalho pt = new PassosTrabalho(passo, custo, tempo);
         this.plano.add(pt.clone());
     }
 
@@ -35,7 +35,9 @@ public class PlanoTrabalho {
     public List<PassosTrabalho> getPlano () { return this.plano.stream().map(PassosTrabalho::clone).collect(Collectors.toList()); }
     public Orcamento getOrcamento() { return this.orc.clone(); }
 
-
+    public int getTempo(int passo){
+        return this.plano.get(passo).getTempo();
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder("{\n");

@@ -11,8 +11,10 @@ public interface IGestFuncionariosFacade {
 
     Map<String, Funcionario> getFuncionarios();
 
-    public void incrementaRecepcoes(String username);
+    void incrementaRecepcoes(String username);
 
-    public void incrementaEntregas(String username);
+    void incrementaEntregas(String username);
+
+    String imprimeRecepcoesEntregas();
 
 }

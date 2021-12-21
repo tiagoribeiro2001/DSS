@@ -14,6 +14,7 @@ public class Tecnico {
     private List<Equipamento> equipamentos_reparados;
     private List<Equipamento> equipamentos_reparados_expresso;
     private int tempoGasto;
+    private int desvioTempoGasto;
 
     public Tecnico (String username, String password) {
         this.username = username;
@@ -22,6 +23,7 @@ public class Tecnico {
         this.equipamentos_reparados = new ArrayList<>();
         this.equipamentos_reparados_expresso = new ArrayList<>();
         this.tempoGasto = 0;
+        this.desvioTempoGasto = 0;
     }
 
     public Tecnico (Tecnico t) {
@@ -31,6 +33,7 @@ public class Tecnico {
         this.equipamentos_reparados = t.getEquipamentosReparados();
         this.equipamentos_reparados_expresso = t.getEquipamentosReparadosExpresso();
         this.tempoGasto = t.getTempoGasto();
+        this.desvioTempoGasto = t.getDesvioTempoGasto();
     }
 
     public String getUsername() {
@@ -49,6 +52,10 @@ public class Tecnico {
         return this.tempoGasto;
     }
 
+    public int getDesvioTempoGasto() {
+        return this.desvioTempoGasto;
+    }
+
     public List<Equipamento> getEquipamentosReparados() {
         return this.equipamentos_reparados.stream().map(Equipamento::clone).collect(Collectors.toList());
     }
@@ -58,6 +65,8 @@ public class Tecnico {
     }
 
     public void incrementaTempoGasto(int tempo) {this.tempoGasto += tempo;}
+
+    public void incrementaDesvioTempoGasto(int tempo) {this.desvioTempoGasto += tempo;}
 
     public boolean autenticacao (String password) {
         if(this.password.equals(password)) {
@@ -72,6 +81,18 @@ public class Tecnico {
     }
 
     public void addEquipamentosReparadosExpresso(Equipamento eq) {this.equipamentos_reparados_expresso.add(eq);}
+
+    public float tempoMedioReparacao(){
+        if (this.equipamentos_reparados.size() == 0)
+            return 0;
+        return (float) this.tempoGasto / this.equipamentos_reparados.size();
+    }
+
+    public float desvioTempoMedioReparacao(){
+        if (this.equipamentos_reparados.size() == 0)
+            return 0;
+        return (float) this.desvioTempoGasto / this.equipamentos_reparados.size();
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder("Funcionario {\n");
