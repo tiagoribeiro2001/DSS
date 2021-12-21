@@ -1,9 +1,10 @@
 package DSS.GestGestores;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Gestor {
+public class Gestor implements Serializable {
     private String username;
     private String password;
     private boolean autenticado;

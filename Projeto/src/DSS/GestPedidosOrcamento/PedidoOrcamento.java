@@ -2,7 +2,9 @@ package DSS.GestPedidosOrcamento;
 
 import DSS.GestEquipamentos.Equipamento;
 
-public class PedidoOrcamento {
+import java.io.Serializable;
+
+public class PedidoOrcamento implements Serializable {
 
     private Equipamento equipamento;
     private String problema;

@@ -1,9 +1,10 @@
 package DSS.GestOrcamentos;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-public class GestOrcamentosFacade implements IGestOrcamentosFacade{
+public class GestOrcamentosFacade implements IGestOrcamentosFacade, Serializable {
     private LinkedHashMap<Integer, Orcamento> orcamentos;
 
     public GestOrcamentosFacade () {
@@ -28,6 +29,14 @@ public class GestOrcamentosFacade implements IGestOrcamentosFacade{
         this.orcamentos.remove(this.orcamentos.entrySet().iterator().next().getKey());
     }
 
+    public Orcamento getOrcamento (int nif) {return this.orcamentos.get(nif);}
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Lista de reparações necessárias:\n");
+        sb.append("-------------------------------------\n");
+        this.orcamentos.values().forEach(j -> sb.append(j.toString()).append("-------------------------------------\n"));
+        return sb.toString();
+    }
     public boolean existeOrcamento (int nif) {
         return this.orcamentos.containsKey(nif);
     }

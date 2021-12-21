@@ -3,7 +3,9 @@ package DSS.GestPagamentos;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestOrcamentos.Orcamento;
 
-public class Pagamento {
+import java.io.Serializable;
+
+public class Pagamento implements Serializable {
     private int nif;
     private double valor;
     private Equipamento eq;

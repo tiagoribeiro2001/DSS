@@ -2,7 +2,9 @@ package DSS.GestFuncionarios;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestTecnicos.Tecnico;
 
-public class Funcionario {
+import java.io.Serializable;
+
+public class Funcionario implements Serializable {
 
     private String username;
     private String password;
@@ -34,8 +36,7 @@ public class Funcionario {
         return this.username;
     }
 
-    //Obtem password (apenas acessível pela própria classe).
-    private String getPassword () {
+    public String getPassword () {
         return this.password;
     }
 

@@ -10,4 +10,5 @@ public interface IGestOrcamentosFacade {
     public void removeOrcamentoMaisAntigo();
     double obtemOrcamento (int nif);
     boolean existeOrcamento (int nif);
+    Orcamento getOrcamento (int nif);
 }

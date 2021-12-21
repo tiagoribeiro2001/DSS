@@ -2,11 +2,12 @@ package DSS.GestTecnicos;
 
 import DSS.GestEquipamentos.Equipamento;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Tecnico {
+public class Tecnico implements Serializable {
 
     private String username;
     private String password;

@@ -2,11 +2,12 @@ package DSS.GestFuncionarios;
 
 import DSS.GestTecnicos.Tecnico;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class GestFuncionariosFacade implements IGestFuncionariosFacade {
+public class GestFuncionariosFacade implements IGestFuncionariosFacade, Serializable {
 
     private Map<String, Funcionario> funcionarios;
 
@@ -27,6 +28,10 @@ public class GestFuncionariosFacade implements IGestFuncionariosFacade {
         return false;
     }
 
+    public void removeFuncionario (String username) {
+        this.funcionarios.remove(username);
+    }
+
     public boolean isAutenticado (String username) {
         return this.funcionarios.get(username).isAutenticado();
     }
@@ -44,6 +49,10 @@ public class GestFuncionariosFacade implements IGestFuncionariosFacade {
 
     public void incrementaEntregas(String username){
         this.funcionarios.get(username).incEntregas();
+    }
+
+    public Funcionario obtemFuncionario(String username) {
+        return this.funcionarios.get(username).clone();
     }
 
     public String imprimeRecepcoesEntregas() {

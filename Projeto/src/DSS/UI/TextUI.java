@@ -18,18 +18,18 @@ import DSS.GestPedidosOrcamento.IGestPedidosOrcamentoFacade;
 import DSS.GestPedidosOrcamento.PedidoOrcamento;
 import DSS.GestPlanosTrabalho.GestPlanosTrabalhoFacade;
 import DSS.GestPlanosTrabalho.IGestPlanosTrabalhoFacade;
-import DSS.GestPlanosTrabalho.PassosTrabalho;
 import DSS.GestPlanosTrabalho.PlanoTrabalho;
 import DSS.GestTecnicos.GestTecnicosFacade;
 import DSS.GestTecnicos.IGestTecnicosFacade;
 import DSS.GestOrcamentos.Orcamento;
 import DSS.GestTecnicos.Tecnico;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
 import static java.lang.Math.abs;
 
-public class TextUI {
+public class TextUI implements Serializable {
     private IGestFuncionariosFacade funcionarios;
     private IGestGestoresFacade gestores;
     private IGestTecnicosFacade tecnicos;
@@ -38,7 +38,7 @@ public class TextUI {
     private IGestPedidosOrcamentoFacade pedidosOrcamento;
     private IGestPagamentosFacade pagamentos;
     private IGestPlanosTrabalhoFacade planosTrabalho;
-    private Scanner scanner;
+    private static Scanner scanner = new Scanner(System.in);
     private String username;
 
     private Tecnico tec = new Tecnico("tec", "tec");
@@ -55,7 +55,6 @@ public class TextUI {
         this.pagamentos = new GestPagamentosFacade();
         this.planosTrabalho = new GestPlanosTrabalhoFacade();
         this.username = "";
-        scanner = new Scanner(System.in);
     }
 
     public void run() {
@@ -114,11 +113,13 @@ public class TextUI {
         Menu menu = new Menu(new String[]{
                 "Aceder a lista de reparações por técnico.",
                 "Aceder a lista de receções e entregas por funcionário.",
-                "Aceder a lista de todas as intervenções realizadas por técnico."
+                "Aceder a lista de todas as intervenções realizadas por técnico.",
+                "Promover Funcionário."
         });
         menu.setHandler(1, this::acederListaReparacoes);
         menu.setHandler(2, this::acederListaRececoesEntregas);
         menu.setHandler(3, this::acederListaIntervencoes);
+        menu.setHandler(4, this::promoverFuncionario);
 
         menu.run();
     }
@@ -319,9 +320,12 @@ public class TextUI {
         if (this.tecnicos.isAutenticado(this.username)) {
             if (!this.pedidosOrcamento.isPedidosOrcamentoEmpty()) {
                 PedidoOrcamento po = this.pedidosOrcamento.obtemPedido();
+
+                System.out.println("Problema do Dispositivo:");
                 System.out.println(po.getProblema());
+                System.out.println("--------------------------------");
                 PlanoTrabalho pt = menuOrcamento(po.getEquipamento().clone());
-                pt.registaOrcamento();
+                pt.registaOrcamento(po.getProblema());
                 this.orcamentos.addOrcamento(pt.getOrcamento());
                 this.equipamentos.insereCustoReparacao(po.getEquipamento().getNifCliente(), pt.getOrcamento().getValor());
                 this.planosTrabalho.adicionaPlano(pt);
@@ -397,7 +401,52 @@ public class TextUI {
     }
 
     private void registarReparacaoUrgente () {
-
+        double custoReal = 0.0;
+        if (!this.equipamentos.isNaoReparadosEmpty()) {
+            System.out.println(this.orcamentos.toString());
+            System.out.println("Insira o ID da reparação que pretende efetuar: ");
+            int nif = scanner.nextInt();
+            scanner.nextLine();
+            Orcamento o = this.orcamentos.getOrcamento(nif);
+            System.out.println("\n-------------------//-----------------------");
+            System.out.println("REPARAÇÃO DE DISPOSITIVO\n");
+            System.out.println("Identificador do dispositivo: " + nif);
+            System.out.println("Plano de trabalhos:");
+            PlanoTrabalho pt = this.planosTrabalho.obterPlano(nif);
+            PlanoTrabalho planoReal = new PlanoTrabalho(equipamentos.obtemEquipamento(nif));
+            for (int i = 0; i < pt.tamanhoPlano(); i++) {
+                System.out.println("\n--------------------//----------------------");
+                System.out.println(pt.getPlano().get(i).toString());
+                System.out.println("Indique o tempo gasto para a tarefa (em minutos): ");
+                int gasto = scanner.nextInt();
+                scanner.nextLine();
+                int gastoPlano = pt.getTempo(i);
+                this.tecnicos.incrementaDesvioTempoGasto(this.username, abs(gasto - gastoPlano));
+                this.tecnicos.incrementaTempoGasto(this.username, gasto);
+                System.out.println("Insira o custo atribuido à realização deste passo: ");
+                double temp = scanner.nextDouble();
+                scanner.nextLine();
+                custoReal += temp;
+                planoReal.adicionaPasso(pt.getPlano().get(i).getPasso(), temp, gasto);
+            }
+            System.out.println("\n--------------------//----------------------");
+            if (custoReal > o.getValor() * 1.20)
+                System.out.println("Custo de reparação real foi superior ao orçamento.");
+            System.out.println("Pretende que seja realizada a reparação?\n1- Sim\n2- Não");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+            if (opcao == 1) {
+                this.equipamentos.consertaEquipamento(o.getEquipamento().getNifCliente());
+                this.tecnicos.adicionaEquipamentosReparados(this.username, o.getEquipamento().clone());
+                this.orcamentos.removeOrcamentoMaisAntigo();
+                this.planosTrabalho.adicionaPlanoRealizado(planoReal);
+                System.out.println("Reparação realizada com sucesso!");
+            } else
+                System.out.println("A reparação não foi concluída.");
+        }
+        else {
+            System.out.println("Não existem equipamentos para reparar.");
+        }
     }
     // ------------------- Auxiliares menu gestor --------------------//
     private void acederListaReparacoes () {
@@ -454,6 +503,33 @@ public class TextUI {
             System.out.println("[NIF: " + nif + "] Custo da reparação expresso: " + custo);
             System.out.println("--------------------//----------------------");
         }
+    }
+
+    public void promoverFuncionario() {
+        if (this.gestores.isAutenticado(this.username)) {
+            System.out.println("Insira o username do Funcionário que pretende promover:");
+            String username = scanner.nextLine();
+            System.out.println("Para que posição pretende promover o funcionáio?\n1- Técnico\n2- Gestor");
+            int opcao = scanner.nextInt(); scanner.nextLine();
+            if (opcao == 1) {
+                while (!this.tecnicos.registaTecnico(this.funcionarios.obtemFuncionario(username))) {
+                    System.out.println("Já existe um técnico com esse username, por favor insira um novo:");
+                    username = scanner.nextLine();
+                }
+                this.funcionarios.removeFuncionario(username);
+                System.out.println("Funcionário promovido a técnico com sucesso!");
+            } else if (opcao == 2) {
+                while (!this.gestores.registaGestor(this.funcionarios.obtemFuncionario(username))) {
+                    System.out.println("Já existe um gestor com esse username, por favor insira um novo:");
+                    username = scanner.nextLine();
+                }
+                this.funcionarios.removeFuncionario(username);
+                System.out.println("Funcionário promovido a Gestor com sucesso!");
+            }
+
+        }
+        else
+            System.out.println("Erro: Gestor deverá estar autenticado.");
     }
 
 }

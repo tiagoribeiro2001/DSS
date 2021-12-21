@@ -1,10 +1,11 @@
 package DSS.GestEquipamentos;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class GestEquipamentosFacade implements IGestEquipamentosFacade {
+public class GestEquipamentosFacade implements IGestEquipamentosFacade, Serializable {
     Map<Integer, Equipamento> equipamentosNaoReparados;
     Map<Integer, Equipamento> equipamentosReparados;
     Map<Integer, Equipamento> equipamentosNaoReparadosExpresso;

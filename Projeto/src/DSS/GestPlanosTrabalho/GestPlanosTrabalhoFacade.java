@@ -1,9 +1,10 @@
 package DSS.GestPlanosTrabalho;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GestPlanosTrabalhoFacade implements IGestPlanosTrabalhoFacade{
+public class GestPlanosTrabalhoFacade implements IGestPlanosTrabalhoFacade, Serializable {
     Map<Integer, PlanoTrabalho> planos;
     Map<Integer, PlanoTrabalho> planosRealizados;
 

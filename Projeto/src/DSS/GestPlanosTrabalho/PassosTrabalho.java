@@ -1,6 +1,8 @@
 package DSS.GestPlanosTrabalho;
 
-public class PassosTrabalho {
+import java.io.Serializable;
+
+public class PassosTrabalho implements Serializable {
     String passo;
     double custo;
     int tempo;

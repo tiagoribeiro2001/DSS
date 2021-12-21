@@ -2,9 +2,10 @@ package DSS.GestPedidosOrcamento;
 
 import DSS.GestOrcamentos.GestOrcamentosFacade;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class GestPedidosOrcamentoFacade implements IGestPedidosOrcamentoFacade{
+public class GestPedidosOrcamentoFacade implements IGestPedidosOrcamentoFacade, Serializable {
     private LinkedList<PedidoOrcamento> pedidosOrcamento;
 
     public GestPedidosOrcamentoFacade() {this.pedidosOrcamento = new LinkedList<>();}

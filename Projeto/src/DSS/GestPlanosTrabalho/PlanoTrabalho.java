@@ -3,11 +3,12 @@ package DSS.GestPlanosTrabalho;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestOrcamentos.Orcamento;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PlanoTrabalho {
+public class PlanoTrabalho implements Serializable {
     private List<PassosTrabalho> plano;
     private Orcamento orc;
 
@@ -30,7 +31,10 @@ public class PlanoTrabalho {
         this.plano.add(pt.clone());
     }
 
-    public void registaOrcamento () { this.orc.setValor(getCustoTotal()); }
+    public void registaOrcamento (String problema) {
+        this.orc.setValor(getCustoTotal());
+        this.orc.setProblema(problema);
+    }
 
     public List<PassosTrabalho> getPlano () { return this.plano.stream().map(PassosTrabalho::clone).collect(Collectors.toList()); }
     public Orcamento getOrcamento() { return this.orc.clone(); }

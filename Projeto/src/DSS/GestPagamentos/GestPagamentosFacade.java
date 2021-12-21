@@ -1,9 +1,9 @@
 package DSS.GestPagamentos;
-
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GestPagamentosFacade implements IGestPagamentosFacade{
+public class GestPagamentosFacade implements IGestPagamentosFacade, Serializable {
     private Map<Integer, Pagamento> pagamentos;
 
     public GestPagamentosFacade() {

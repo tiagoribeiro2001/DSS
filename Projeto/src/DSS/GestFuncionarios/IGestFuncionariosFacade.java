@@ -17,4 +17,8 @@ public interface IGestFuncionariosFacade {
 
     String imprimeRecepcoesEntregas();
 
+    void removeFuncionario (String username);
+
+    Funcionario obtemFuncionario(String username);
+
 }

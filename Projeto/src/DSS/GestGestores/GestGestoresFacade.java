@@ -1,9 +1,12 @@
 package DSS.GestGestores;
 
+import DSS.GestFuncionarios.Funcionario;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GestGestoresFacade implements IGestGestoresFacade{
+public class GestGestoresFacade implements IGestGestoresFacade, Serializable {
 
     private Map<String, Gestor> gestores;
 
@@ -19,6 +22,15 @@ public class GestGestoresFacade implements IGestGestoresFacade{
 
     public void registaGestor(Gestor g) {
         this.gestores.put(g.getUsername(), g.clone());
+    }
+
+    public boolean registaGestor(Funcionario f) {
+        if (!this.gestores.containsKey(f.getUsername())) {
+            Gestor g = new Gestor(f.getUsername(), f.getPassword());
+            this.gestores.put(g.getUsername(), g.clone());
+            return true;
+        }
+        return false;
     }
 
     public String toString() {

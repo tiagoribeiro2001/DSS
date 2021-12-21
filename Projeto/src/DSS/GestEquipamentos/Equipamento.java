@@ -2,7 +2,9 @@ package DSS.GestEquipamentos;
 
 import DSS.GestFuncionarios.Funcionario;
 
-public class Equipamento {
+import java.io.Serializable;
+
+public class Equipamento implements Serializable {
 
     private int nifCliente;
     private String contacto;

@@ -1,13 +1,15 @@
 package DSS.GestTecnicos;
 
 import DSS.GestEquipamentos.Equipamento;
+import DSS.GestFuncionarios.Funcionario;
 import DSS.GestPlanosTrabalho.PlanoTrabalho;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GestTecnicosFacade implements IGestTecnicosFacade {
+public class GestTecnicosFacade implements IGestTecnicosFacade, Serializable {
 
     private Map<String, Tecnico> tecnicos;
 
@@ -33,6 +35,15 @@ public class GestTecnicosFacade implements IGestTecnicosFacade {
 
     public List<Equipamento> getEquipamentosReparados(String username) {
         return this.tecnicos.get(username).getEquipamentosReparados();
+    }
+
+    public boolean registaTecnico (Funcionario f) {
+        if (!this.tecnicos.containsKey(f.getUsername())) {
+            Tecnico t = new Tecnico(f.getUsername(), f.getPassword());
+            this.tecnicos.put(t.getUsername(), t.clone());
+            return true;
+        }
+        return false;
     }
 
     public void registaTecnico(Tecnico t) {
