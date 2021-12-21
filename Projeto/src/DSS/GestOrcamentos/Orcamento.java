@@ -6,6 +6,7 @@ public class Orcamento {
     private int nif;
     private Equipamento equipamento;
     private int valor;
+    //private boolean aceite;
 
     public Orcamento (int nif, Equipamento eq, int valor) {
         this.nif = nif;
@@ -22,6 +23,10 @@ public class Orcamento {
     public Orcamento (Equipamento eq) {
         this.nif = eq.getNifCliente();
         this.equipamento = eq;
+    }
+
+    public void setValor (int valor) {
+        this.valor = valor;
     }
 
     public Orcamento(Orcamento o) {

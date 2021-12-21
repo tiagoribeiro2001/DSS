@@ -15,6 +15,9 @@ import DSS.GestPagamentos.Pagamento;
 import DSS.GestPedidosOrcamento.GestPedidosOrcamentoFacade;
 import DSS.GestPedidosOrcamento.IGestPedidosOrcamentoFacade;
 import DSS.GestPedidosOrcamento.PedidoOrcamento;
+import DSS.GestPlanosTrabalho.GestPlanosTrabalhoFacade;
+import DSS.GestPlanosTrabalho.IGestPlanosTrabalhoFacade;
+import DSS.GestPlanosTrabalho.PlanoTrabalho;
 import DSS.GestTecnicos.GestTecnicosFacade;
 import DSS.GestTecnicos.IGestTecnicosFacade;
 import DSS.GestOrcamentos.Orcamento;
@@ -29,6 +32,7 @@ public class TextUI {
     private IGestOrcamentosFacade orcamentos;
     private IGestPedidosOrcamentoFacade pedidosOrcamento;
     private IGestPagamentosFacade pagamentos;
+    private IGestPlanosTrabalhoFacade planosTrabalho;
     private Scanner scanner;
     private String username;
 
@@ -40,6 +44,7 @@ public class TextUI {
         this.orcamentos = new GestOrcamentosFacade();
         this.pedidosOrcamento = new GestPedidosOrcamentoFacade();
         this.pagamentos = new GestPagamentosFacade();
+        this.planosTrabalho = new GestPlanosTrabalhoFacade();
         this.username = "";
         scanner = new Scanner(System.in);
     }
@@ -272,14 +277,30 @@ public class TextUI {
 
     //------------------ Auxiliares menu tecnico -----------------------//
 
+    private PlanoTrabalho menuOrcamento(Equipamento e) {
+        PlanoTrabalho pt = new PlanoTrabalho(e.clone());
+        String res = "";
+        while (!res.equals("sair")) {
+            System.out.println("Insira um passo (Se pretender sair escreva \"sair\"):");
+            res = scanner.nextLine();
+            if (!res.equals("sair")) {
+                System.out.println("Insira um custo associado a dito passo:");
+                int custo = scanner.nextInt();
+                scanner.nextLine();
+                pt.adicionaPasso(res, custo);
+            }
+        }
+        return pt;
+    }
+
     private void registarOrcamento () {
         if (this.tecnicos.isAutenticado(this.username)) {
             PedidoOrcamento po = this.pedidosOrcamento.obtemPedido();
             System.out.println(po.getProblema());
-            System.out.println("Com base no problema descrito, qual será o orçamento atribuido?");
-            int valor = scanner.nextInt();scanner.nextLine();
-            Orcamento orc = new Orcamento(po.getEquipamento(), valor);
-            this.orcamentos.addOrcamento(orc);
+            PlanoTrabalho pt = menuOrcamento(po.getEquipamento().clone());
+            pt.registaOrcamento();
+            this.orcamentos.addOrcamento(pt.getOrcamento());
+            this.planosTrabalho.adicionaPlano(pt);
             System.out.println("Orçamento registado com sucesso.");
             //Talvez implementar para enviar email para o cliente.
         }
