@@ -1,5 +1,7 @@
 package DSS.GestPagamentos;
 
+import DSS.GestEquipamentos.Equipamento;
+
 public interface IGestPagamentosFacade {
-    void addPagamento(Pagamento p);
+    void addPagamento(int nif, double valor, Equipamento equip);
 }

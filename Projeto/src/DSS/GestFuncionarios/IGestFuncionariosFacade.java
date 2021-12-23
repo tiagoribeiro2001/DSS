@@ -7,7 +7,7 @@ import DSS.Exceptions.UsernameNaoExisteException;
 import java.util.Map;
 
 public interface IGestFuncionariosFacade {
-    void registaFuncionario(Funcionario novo) throws UsernameJaExisteException;
+    void registaFuncionario(String username, String password) throws UsernameJaExisteException;
 
     boolean autenticaFuncionario (String username, String password) throws CredenciaisInvalidasException;
 
@@ -15,11 +15,11 @@ public interface IGestFuncionariosFacade {
 
     Map<String, Funcionario> getFuncionarios();
 
+    Funcionario getFuncionario(String username) throws UsernameNaoExisteException;
+
     void incrementaRecepcoes(String username);
 
     void incrementaEntregas(String username);
-
-    String imprimeRecepcoesEntregas();
 
     void removeFuncionario (String username);
 
@@ -27,4 +27,7 @@ public interface IGestFuncionariosFacade {
 
     boolean existeFuncionario(String username) throws UsernameNaoExisteException;
 
+    boolean funcionariosIsEmpty();
+
+    String imprimeRecepcoesEntregas();
 }

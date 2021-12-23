@@ -4,6 +4,7 @@ import DSS.Exceptions.CredenciaisInvalidasException;
 import DSS.Exceptions.UsernameNaoExisteException;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestFuncionarios.Funcionario;
+import DSS.GestPlanosTrabalho.PlanoTrabalho;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,11 +27,17 @@ public interface IGestTecnicosFacade {
 
     void adicionaEquipamentosReparadosExpresso(String username, Equipamento eq);
 
+    void addPlanoTrabalho(String username, int nif, PlanoTrabalho plano);
+
     void incrementaTempoGasto (String username, int tempo);
 
     void incrementaDesvioTempoGasto (String username, int tempo);
 
+    boolean tecnicosIsEmpty();
+
     String imprimeReparacoesInfo();
+
+    String imprimeIntervencoes(String username) throws UsernameNaoExisteException;
 
     boolean registaTecnico (Funcionario f);
 }

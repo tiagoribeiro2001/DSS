@@ -1,4 +1,6 @@
 package DSS.GestPagamentos;
+import DSS.GestEquipamentos.Equipamento;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +12,8 @@ public class GestPagamentosFacade implements IGestPagamentosFacade, Serializable
         this.pagamentos = new HashMap<>();
     }
 
-    public void addPagamento(Pagamento p) {
-        this.pagamentos.put(p.getNif(), p.clone());
+    public void addPagamento(int nif, double valor, Equipamento equip) {
+        Pagamento pag = new Pagamento(nif, valor, equip.clone());
+        this.pagamentos.put(pag.getNif(), pag);
     }
 }

@@ -8,7 +8,7 @@ public interface IGestGestoresFacade {
 
     boolean isAutenticado(String username);
 
-    void registaGestor(Gestor g);
+    void registaGestor(String username, String password);
 
     boolean registaGestor(Funcionario f);
 

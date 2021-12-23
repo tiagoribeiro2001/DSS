@@ -1,10 +1,13 @@
 package DSS.GestTecnicos;
 
 import DSS.GestEquipamentos.Equipamento;
+import DSS.GestPlanosTrabalho.PlanoTrabalho;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Tecnico implements Serializable {
@@ -16,6 +19,7 @@ public class Tecnico implements Serializable {
     private List<Equipamento> equipamentos_reparados_expresso;
     private int tempoGasto;
     private int desvioTempoGasto;
+    private Map<Integer, PlanoTrabalho> planosRealizados;
 
     public Tecnico (String username, String password) {
         this.username = username;
@@ -25,6 +29,7 @@ public class Tecnico implements Serializable {
         this.equipamentos_reparados_expresso = new ArrayList<>();
         this.tempoGasto = 0;
         this.desvioTempoGasto = 0;
+        this.planosRealizados = new HashMap<>();
     }
 
     public Tecnico (Tecnico t) {
@@ -35,6 +40,7 @@ public class Tecnico implements Serializable {
         this.equipamentos_reparados_expresso = t.getEquipamentosReparadosExpresso();
         this.tempoGasto = t.getTempoGasto();
         this.desvioTempoGasto = t.getDesvioTempoGasto();
+        this.planosRealizados = t.getPlanosRealizados();
     }
 
     public String getUsername() {
@@ -63,6 +69,18 @@ public class Tecnico implements Serializable {
 
     public List<Equipamento> getEquipamentosReparadosExpresso() {
         return this.equipamentos_reparados_expresso.stream().map(Equipamento::clone).collect(Collectors.toList());
+    }
+
+    public Map<Integer, PlanoTrabalho> getPlanosRealizados() {
+        return new HashMap<>(this.planosRealizados);
+    }
+
+    public PlanoTrabalho getPlanoTrabalho(int nif){
+        return this.planosRealizados.get(nif);
+    }
+
+    public void addPlanoTrabalho(int nif, PlanoTrabalho plano){
+        this.planosRealizados.put(nif, plano);
     }
 
     public void incrementaTempoGasto(int tempo) {this.tempoGasto += tempo;}

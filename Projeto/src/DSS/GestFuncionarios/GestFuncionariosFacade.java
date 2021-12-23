@@ -3,6 +3,7 @@ package DSS.GestFuncionarios;
 import DSS.Exceptions.CredenciaisInvalidasException;
 import DSS.Exceptions.UsernameJaExisteException;
 import DSS.Exceptions.UsernameNaoExisteException;
+import DSS.GestTecnicos.Tecnico;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -18,9 +19,10 @@ public class GestFuncionariosFacade implements IGestFuncionariosFacade, Serializ
     }
 
     //Regista funcionário no sistema.
-    public void registaFuncionario(Funcionario fun) throws UsernameJaExisteException{
-        if (this.funcionarios.containsKey(fun.getUsername())) throw new UsernameJaExisteException("Erro: Já existe um funcionário registado com esse username!");
-        funcionarios.put(fun.getUsername(), fun.clone());
+    public void registaFuncionario(String username, String password) throws UsernameJaExisteException{
+        if (this.funcionarios.containsKey(username)) throw new UsernameJaExisteException("Erro: Já existe um funcionário registado com esse username!");
+        Funcionario novo = new Funcionario(username, password);
+        funcionarios.put(novo.getUsername(), novo);
     }
 
     public boolean existeFuncionario(String username) throws UsernameNaoExisteException {
@@ -52,6 +54,12 @@ public class GestFuncionariosFacade implements IGestFuncionariosFacade, Serializ
         return newFun;
     }
 
+    public Funcionario getFuncionario(String username) throws UsernameNaoExisteException {
+        if(this.funcionarios.containsKey(username))
+            return this.funcionarios.get(username);
+        throw new UsernameNaoExisteException("Erro: Username não está registado no sistema.");
+    }
+
     public void incrementaRecepcoes(String username){
         this.funcionarios.get(username).incRecepcoes();
     }
@@ -62,6 +70,10 @@ public class GestFuncionariosFacade implements IGestFuncionariosFacade, Serializ
 
     public Funcionario obtemFuncionario(String username) {
         return this.funcionarios.get(username).clone();
+    }
+
+    public boolean funcionariosIsEmpty(){
+        return this.funcionarios.isEmpty();
     }
 
     public String imprimeRecepcoesEntregas() {

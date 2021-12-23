@@ -1,6 +1,7 @@
 package DSS.GestEquipamentos;
 
 import DSS.Exceptions.EquipamentoInexistenteException;
+import DSS.GestFuncionarios.Funcionario;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -18,7 +19,8 @@ public class GestEquipamentosFacade implements IGestEquipamentosFacade, Serializ
         this.equipamentosNaoReparadosExpresso = new LinkedHashMap<>();
     }
 
-    public void registaEquipamento (Equipamento e) {
+    public void registaEquipamento (int nif, Funcionario fun, String email, boolean expresso) {
+        Equipamento e = new Equipamento(nif, fun, email, expresso);
         this.equipamentosNaoReparados.put(e.getNifCliente(), e.clone());
     }
 
@@ -33,8 +35,9 @@ public class GestEquipamentosFacade implements IGestEquipamentosFacade, Serializ
         }
     }
 
-    public void registaEquipamentoExpresso(Equipamento e) {
-        this.equipamentosNaoReparadosExpresso.put(e.getNifCliente(), e.clone());
+    public void registaEquipamentoExpresso(int nif, Funcionario fun, String email, boolean expresso) {
+        Equipamento e = new Equipamento(nif, fun, email, expresso);
+        this.equipamentosNaoReparadosExpresso.put(e.getNifCliente(), e);
     }
 
     public Equipamento obtemEquipamento (int nif) throws EquipamentoInexistenteException {
@@ -94,7 +97,8 @@ public class GestEquipamentosFacade implements IGestEquipamentosFacade, Serializ
         else if (this.equipamentosNaoReparadosExpresso.containsKey(nif)) {
             this.equipamentosNaoReparadosExpresso.remove(nif);
         }
-        throw new EquipamentoInexistenteException("Erro: Equipamento não está registado no sistema.");
+        else
+            throw new EquipamentoInexistenteException("Erro: Equipamento não está registado no sistema.");
     }
 
 

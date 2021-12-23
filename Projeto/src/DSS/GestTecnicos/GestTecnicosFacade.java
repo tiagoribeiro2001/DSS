@@ -75,6 +75,14 @@ public class GestTecnicosFacade implements IGestTecnicosFacade, Serializable {
         this.tecnicos.get(username).addEquipamentosReparadosExpresso(eq);
     }
 
+    public void addPlanoTrabalho(String username, int nif, PlanoTrabalho plano){
+        this.tecnicos.get(username).addPlanoTrabalho(nif, plano);
+    }
+
+    public boolean tecnicosIsEmpty(){
+        return this.tecnicos.isEmpty();
+    }
+
     public String imprimeReparacoesInfo() {
         StringBuilder sb = new StringBuilder();
         for (Tecnico tec : tecnicos.values()){
@@ -85,5 +93,27 @@ public class GestTecnicosFacade implements IGestTecnicosFacade, Serializable {
         return sb.toString();
     }
 
+    public String imprimeIntervencoes(String username) throws UsernameNaoExisteException{
+        StringBuilder sb = new StringBuilder();
+        Tecnico tec = getTecnico(username);
+        sb.append("Reparações Normais:\n");
+        for(Equipamento e : tec.getEquipamentosReparados()) {
+            int nif = e.getNifCliente();
+            sb.append("[NIF: ").append(nif).append("] Plano de trabalho da reparação:\n");
+            PlanoTrabalho plano = tec.getPlanoTrabalho(nif);
+            for (int i = 0; i < plano.tamanhoPlano(); i++) {
+                sb.append("--------------------//----------------------\n");
+                sb.append(plano.getPlano().get(i).toString()).append("\n");
+            }
+        }
+        sb.append("Reparações Expresso:\n");
+        for(Equipamento e : tec.getEquipamentosReparadosExpresso()) {
+            int nif = e.getNifCliente();
+            double custo = e.getCustoReparacao();
+            sb.append("[NIF: ").append(nif).append("] Custo da reparação expresso: ").append(custo).append("\n");
+            sb.append("--------------------//----------------------\n");
+        }
+        return sb.toString();
+    }
 
 }

@@ -1,11 +1,12 @@
 package DSS.GestEquipamentos;
 
 import DSS.Exceptions.EquipamentoInexistenteException;
+import DSS.GestFuncionarios.Funcionario;
 
 public interface IGestEquipamentosFacade {
-    void registaEquipamento (Equipamento e);
+    void registaEquipamento (int nif, Funcionario fun, String email, boolean expresso);
     void consertaEquipamento (int nif);
-    void registaEquipamentoExpresso(Equipamento e);
+    void registaEquipamentoExpresso(int nif, Funcionario fun, String email, boolean expresso);
     Equipamento obtemEquipamento (int nif) throws EquipamentoInexistenteException;
     boolean existeEquipamento(int nif);
     void removeEquipamento(int nif) throws EquipamentoInexistenteException;

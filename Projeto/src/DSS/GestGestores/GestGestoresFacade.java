@@ -21,8 +21,9 @@ public class GestGestoresFacade implements IGestGestoresFacade, Serializable {
         return false;
     }
 
-    public void registaGestor(Gestor g) {
-        this.gestores.put(g.getUsername(), g.clone());
+    public void registaGestor(String username, String password) {
+        Gestor g = new Gestor(username, password);
+        this.gestores.put(g.getUsername(), g);
     }
 
     public boolean registaGestor(Funcionario f) {
