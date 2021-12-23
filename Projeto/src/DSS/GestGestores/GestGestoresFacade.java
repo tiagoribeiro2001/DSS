@@ -1,5 +1,6 @@
 package DSS.GestGestores;
 
+import DSS.Exceptions.CredenciaisInvalidasException;
 import DSS.GestFuncionarios.Funcionario;
 
 import java.io.Serializable;
@@ -43,11 +44,12 @@ public class GestGestoresFacade implements IGestGestoresFacade, Serializable {
     }
 
     //Autentica um gestor.
-    public boolean autenticaGestor(String username, String password) {
+    public boolean autenticaGestor(String username, String password) throws CredenciaisInvalidasException {
         if (this.gestores.containsKey(username)) {
-            return this.gestores.get(username).autenticacao(password);
+            if (this.gestores.get(username).autenticacao(password))
+                return true;
         }
-        return false;
+        throw new CredenciaisInvalidasException ("Erro: Credenciais inseridas são inválidas.");
     }
 
 }

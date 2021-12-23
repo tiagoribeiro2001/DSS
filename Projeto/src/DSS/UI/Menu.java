@@ -1,4 +1,6 @@
 package DSS.UI;
+import DSS.Exceptions.EquipamentoInexistenteException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +10,7 @@ public class Menu {
 
     /** Functional interface para handlers. */
     public interface Handler {
-        void execute();
+        void execute() throws EquipamentoInexistenteException;
     }
 
     /** Functional interface para pré-condições. */
@@ -38,7 +40,7 @@ public class Menu {
      * Termina com a opção 0 (zero).
      * Código disponibilizado na primeira aula pelos docentes da UC.
      */
-    public void run() {
+    public void run(){
         int op;
         do {
             show();
@@ -48,7 +50,12 @@ public class Menu {
                 System.out.println("Opção indisponível! Tente novamente.");
             } else if (op>0) {
                 // executar handler
-                this.handlers.get(op-1).execute();
+                try {
+                    this.handlers.get(op - 1).execute();
+                }
+                catch(EquipamentoInexistenteException e) {
+                    System.out.println("\033[0;31m" + e.getMessage() + "\033[0m");
+                }
             }
         } while (op != 0);
     }
@@ -68,7 +75,7 @@ public class Menu {
             op = -1;
         }
         if (op<0 || op>this.opcoes.size()) {
-            System.out.println("Opção Inválida!!!");
+            System.out.println("\033[0;31mErro: Input inserido é inválido.\033[0m");
             op = -1;
         }
         return op;
@@ -76,6 +83,7 @@ public class Menu {
 
     /** Apresentar o menu */
     private void show() {
+        System.out.println("\n----------------//-------------------");
         for (int i=0; i<this.opcoes.size(); i++) {
             System.out.print(i+1);
             System.out.print(" - ");

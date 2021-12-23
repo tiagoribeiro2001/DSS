@@ -1,5 +1,7 @@
 package DSS.GestEquipamentos;
 
+import DSS.Exceptions.EquipamentoInexistenteException;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -35,11 +37,11 @@ public class GestEquipamentosFacade implements IGestEquipamentosFacade, Serializ
         this.equipamentosNaoReparadosExpresso.put(e.getNifCliente(), e.clone());
     }
 
-    public Equipamento obtemEquipamento (int nif) {
+    public Equipamento obtemEquipamento (int nif) throws EquipamentoInexistenteException {
         if (this.equipamentosNaoReparados.containsKey(nif)) return this.equipamentosNaoReparados.get(nif).clone();
         else if (this.equipamentosReparados.containsKey(nif)) return this.equipamentosReparados.get(nif).clone();
         else if (this.equipamentosNaoReparadosExpresso.containsKey(nif)) return this.equipamentosNaoReparadosExpresso.get(nif).clone();
-        else return null;
+        throw new EquipamentoInexistenteException("Erro: Equipamento inexistente no sistema.");
     }
 
     public boolean existeEquipamento(int nif) {
@@ -72,24 +74,27 @@ public class GestEquipamentosFacade implements IGestEquipamentosFacade, Serializ
         else return 0.0;
     }
 
-    public boolean estaReparado(int nif) {
-        return this.equipamentosReparados.containsKey(nif);
+    public boolean estaReparado(int nif) throws EquipamentoInexistenteException {
+        if (this.existeEquipamento(nif))
+            return this.equipamentosReparados.containsKey(nif);
+        throw new EquipamentoInexistenteException("Erro: Equipamento não está registado no sistema.");
     }
 
 
     public Equipamento getExpressoMaisAntigo() {
         return this.equipamentosNaoReparadosExpresso.entrySet().iterator().next().getValue().clone();
     }
-    public void removeEquipamento(int nif) {
+    public void removeEquipamento(int nif) throws EquipamentoInexistenteException {
         if(this.equipamentosNaoReparados.containsKey(nif)) {
             this.equipamentosNaoReparados.remove(nif);
         }
         else if (this.equipamentosReparados.containsKey(nif)) {
             this.equipamentosReparados.remove(nif);
         }
-        else if (this.equipamentosNaoReparadosExpresso.containsKey(nif)){
+        else if (this.equipamentosNaoReparadosExpresso.containsKey(nif)) {
             this.equipamentosNaoReparadosExpresso.remove(nif);
         }
+        throw new EquipamentoInexistenteException("Erro: Equipamento não está registado no sistema.");
     }
 
 

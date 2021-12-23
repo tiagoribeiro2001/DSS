@@ -1,5 +1,7 @@
 package DSS.GestTecnicos;
 
+import DSS.Exceptions.CredenciaisInvalidasException;
+import DSS.Exceptions.UsernameNaoExisteException;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestFuncionarios.Funcionario;
 
@@ -8,9 +10,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface IGestTecnicosFacade {
-    Tecnico getTecnico(String username);
+    Tecnico getTecnico(String username) throws UsernameNaoExisteException;
 
-    boolean autenticaTecnico(String username, String password);
+    boolean autenticaTecnico(String username, String password) throws CredenciaisInvalidasException;
 
     boolean isAutenticado (String username);
 

@@ -1,6 +1,8 @@
 package DSS.GestFuncionarios;
 
-import DSS.GestTecnicos.Tecnico;
+import DSS.Exceptions.CredenciaisInvalidasException;
+import DSS.Exceptions.UsernameJaExisteException;
+import DSS.Exceptions.UsernameNaoExisteException;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -16,16 +18,23 @@ public class GestFuncionariosFacade implements IGestFuncionariosFacade, Serializ
     }
 
     //Regista funcionário no sistema.
-    public void registaFuncionario(Funcionario fun) {
+    public void registaFuncionario(Funcionario fun) throws UsernameJaExisteException{
+        if (this.funcionarios.containsKey(fun.getUsername())) throw new UsernameJaExisteException("Erro: Já existe um funcionário registado com esse username!");
         funcionarios.put(fun.getUsername(), fun.clone());
     }
 
+    public boolean existeFuncionario(String username) throws UsernameNaoExisteException {
+        if (this.funcionarios.containsKey(username)) return true;
+        throw new UsernameNaoExisteException("Erro: Esse funcionário não está registado no sistema.");
+    }
+
     //Retorna true se o funcionario ficar autenticado, false se nao ficar.
-    public boolean autenticaFuncionario (String username, String password) {
+    public boolean autenticaFuncionario (String username, String password) throws CredenciaisInvalidasException {
         if (this.funcionarios.containsKey(username)) {
-            return this.funcionarios.get(username).autentificacao(password);
+            if (this.funcionarios.get(username).autentificacao(password))
+                return true;
         }
-        return false;
+        throw new CredenciaisInvalidasException("Erro: As credenciais inseridas são inválidas!");
     }
 
     public void removeFuncionario (String username) {

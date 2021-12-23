@@ -1,5 +1,7 @@
 package DSS.GestTecnicos;
 
+import DSS.Exceptions.CredenciaisInvalidasException;
+import DSS.Exceptions.UsernameNaoExisteException;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestFuncionarios.Funcionario;
 import DSS.GestPlanosTrabalho.PlanoTrabalho;
@@ -17,16 +19,19 @@ public class GestTecnicosFacade implements IGestTecnicosFacade, Serializable {
         this.tecnicos = new HashMap<>();
     }
 
-    public Tecnico getTecnico(String username){
-        return this.tecnicos.get(username);
+    public Tecnico getTecnico(String username) throws UsernameNaoExisteException {
+        if(this.tecnicos.containsKey(username))
+            return this.tecnicos.get(username);
+        throw new UsernameNaoExisteException("Erro: Username não está registado no sistema.");
     }
 
     //Autentica um Técnico.
-    public boolean autenticaTecnico(String username, String password) {
+    public boolean autenticaTecnico(String username, String password) throws CredenciaisInvalidasException {
         if (this.tecnicos.containsKey(username)) {
-            return this.tecnicos.get(username).autenticacao(password);
+            if (this.tecnicos.get(username).autenticacao(password))
+                return true;
         }
-        return false;
+        throw new CredenciaisInvalidasException("Erro: Credenciais inseridas são inválidas.");
     }
 
     public boolean existe(String username) {
