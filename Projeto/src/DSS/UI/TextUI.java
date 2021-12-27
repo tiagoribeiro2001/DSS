@@ -600,14 +600,14 @@ public class TextUI implements Serializable {
                     int opcao = scanner.nextInt();
                     scanner.nextLine();
                     if (opcao == 1) {
-                        while (!this.tecnicos.registaTecnico(this.funcionarios.obtemFuncionario(username))) {
+                        while (!this.tecnicos.registaTecnico(this.funcionarios.getFuncionario(username))) {
                             System.out.println("\033[0;31mErro: Já existe um técnico com esse username, por favor insira um novo:\033[0m");
                             username = scanner.nextLine();
                         }
                         this.funcionarios.removeFuncionario(username);
                         System.out.println("\033[0;32mFuncionário promovido a técnico com sucesso!\033[0m");
                     } else if (opcao == 2) {
-                        while (!this.gestores.registaGestor(this.funcionarios.obtemFuncionario(username))) {
+                        while (!this.gestores.registaGestor(this.funcionarios.getFuncionario(username))) {
                             System.out.println("\033[0;31mErro: Já existe um gestor com esse username, por favor insira um novo:\033[0m");
                             username = scanner.nextLine();
                         }

@@ -67,14 +67,6 @@ public interface IGestFuncionariosFacade{
     void removeFuncionario (String username);
 
     /**
-     * Método getter de um Funcionario
-     * @param username Username do Funcionario
-     * @return Funcionario a procurar
-     * @throws UsernameNaoExisteException Exceção lançada quando não existe um Funcionario no sistema com o username dado
-     */
-    Funcionario obtemFuncionario(String username) throws UsernameNaoExisteException;
-
-    /**
      * Método que verifica se existe um dado funcionario
      * @param username Username do Funcionario
      * @return Booleano que indica se esse Funcionario existe
