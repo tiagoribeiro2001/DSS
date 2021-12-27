@@ -30,11 +30,11 @@ public interface IGestOrcamentosFacade {
     void removeOrcamentoMaisAntigo();
 
     /**
-     * Método getter de um Orcamento dado um nif
-     * @param nif Nif dodo do Equipamento
-     * @return Orcamento da reparação do equipamento
+     * Método que obtém o valor orçamentado para a reparação de um Equipamento de um dado nif
+     * @param nif Nif do dono do Equipamento
+     * @return Valor orçamentado
      */
-    Orcamento getOrcamento (int nif);
+    double obtemOrcamento(int nif);
 
     /**
      * Método que verifica se existe um orcamento para uma reparação de um Equipamento de um dado nif
@@ -44,11 +44,11 @@ public interface IGestOrcamentosFacade {
     boolean existeOrcamento(int nif);
 
     /**
-     * Método que obtém o valor orçamentado para a reparação de um Equipamento de um dado nif
-     * @param nif Nif do dono do Equipamento
-     * @return Valor orçamentado
+     * Método getter de um Orcamento dado um nif
+     * @param nif Nif dodo do Equipamento
+     * @return Orcamento da reparação do equipamento
      */
-    double obtemOrcamento(int nif);
+    Orcamento getOrcamento (int nif);
 
     /**
      * Método toString da classe GestOrcamentosFacade
