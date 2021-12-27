@@ -5,7 +5,6 @@ import DSS.Exceptions.UsernameNaoExisteException;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestFuncionarios.Funcionario;
 import DSS.GestPlanosTrabalho.PlanoTrabalho;
-import java.util.List;
 
 /**
  * Interface IGestTecnicosFacade que ocntém os seguintes métodos
