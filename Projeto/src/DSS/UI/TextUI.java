@@ -467,7 +467,7 @@ public class TextUI implements Serializable {
 
     /**
      * Método que regista uma reparação urgente
-     * @throws EquipamentoInexistenteException Exceção lanaçda quando não existem equipamentos para reparar
+     * @throws EquipamentoInexistenteException Exceção lançada quando não existem equipamentos para reparar
      */
     private void registarReparacaoUrgente () throws EquipamentoInexistenteException {
         double custoReal = 0.0;
@@ -477,7 +477,7 @@ public class TextUI implements Serializable {
                 System.out.println("Insira o ID da reparação que pretende efetuar: ");
                 int nif = scanner.nextInt();
                 scanner.nextLine();
-                if (equipamentos.existeEquipamento(nif)) {
+                if (equipamentos.existeEquipamento(nif) && orcamentos.existeOrcamento(nif)) {
                     System.out.println("\n-------------------//-----------------------");
                     System.out.println("REPARAÇÃO DE DISPOSITIVO\n");
                     System.out.println("Identificador do dispositivo: " + nif);
