@@ -12,7 +12,7 @@ public interface IGestGestoresFacade{
      * @param username Username do Gestor
      * @param password Password do Gestor
      * @return Booleano que indica se o Gestor foi autenticado com sucesso
-     * @throws CredenciaisInvalidasException
+     * @throws CredenciaisInvalidasException Exceção lançada quando as credencias fornecidas não correspondem às que estão no sistema
      */
     boolean autenticaGestor(String username, String password) throws CredenciaisInvalidasException;
 
@@ -36,5 +36,4 @@ public interface IGestGestoresFacade{
      * @return Booleano que indica se o registo foi efetuado com sucesso
      */
     boolean registaGestor(Funcionario f);
-
 }

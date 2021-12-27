@@ -5,12 +5,13 @@ import DSS.Exceptions.UsernameNaoExisteException;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestFuncionarios.Funcionario;
 import DSS.GestPlanosTrabalho.PlanoTrabalho;
-
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe GestTecnicosFacade usada para representar um coleção de Tecnicos no sistema
+ */
 public class GestTecnicosFacade implements IGestTecnicosFacade, Serializable {
 
     private Map<String, Tecnico> tecnicos;
@@ -34,14 +35,6 @@ public class GestTecnicosFacade implements IGestTecnicosFacade, Serializable {
         throw new CredenciaisInvalidasException("Erro: Credenciais inseridas são inválidas.");
     }
 
-    public boolean existe(String username) {
-        return this.tecnicos.containsKey(username);
-    }
-
-    public List<Equipamento> getEquipamentosReparados(String username) {
-        return this.tecnicos.get(username).getEquipamentosReparados();
-    }
-
     public boolean registaTecnico (Funcionario f) {
         if (!this.tecnicos.containsKey(f.getUsername())) {
             Tecnico t = new Tecnico(f.getUsername(), f.getPassword());
@@ -49,10 +42,6 @@ public class GestTecnicosFacade implements IGestTecnicosFacade, Serializable {
             return true;
         }
         return false;
-    }
-
-    public void registaTecnico(Tecnico t) {
-        this.tecnicos.put(t.getUsername(), t.clone());
     }
 
     public boolean isAutenticado (String username) {

@@ -5,15 +5,15 @@ import java.io.Serializable;
 /**
  * Classe Gestor usada para representar um gestor presente no sistema
  */
-public class Gestor implements Serializable {
+public class Gestor implements Serializable{
     private String username;
     private String password;
     private boolean autenticado;
 
     /**
      * Construtor parametrizado da classe Gestor
-     * @param username
-     * @param password
+     * @param username Username do Gestor
+     * @param password Password do Gestor
      */
     public Gestor(String username, String password){
         this.username = username;
@@ -48,8 +48,8 @@ public class Gestor implements Serializable {
     }
 
     /**
-     * Método que verifica se un Gestor está autenticado
-     * @return Booleano que indica se se o Gestor está autenticado
+     * Método que verifica se um Gestor está autenticado
+     * @return Booleano que indica se o Gestor está autenticado
      */
     public boolean isAutenticado(){
         return this.autenticado;
@@ -58,7 +58,7 @@ public class Gestor implements Serializable {
     /**
      * Método que efetua a autenticação do Gestor
      * @param password Password do Gestor
-     * @return Booleano que infica se foi efetuada a autenticação com sucesso
+     * @return Booleano que indica se foi efetuada a autenticação com sucesso
      */
     public boolean autenticacao(String password){
         if (this.password.equals(password)) {
