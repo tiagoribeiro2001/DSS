@@ -72,7 +72,7 @@ public class Funcionario implements Serializable {
 
     /**
      * Método que verifica se um Funcionario está autenticado
-     * @return Booleano que indica se o funcionário está autenticado
+     * @return Booleano que indica se o Funcionario está autenticado
      */
     public boolean isAutenticado(){
         return autentificacao;
@@ -81,7 +81,7 @@ public class Funcionario implements Serializable {
     /**
      * Método que efetua a autenticação do Funcionario
      * @param password Password do Funcionario
-     * @return Booleano que infica se foi efetuada a autenticação com sucesso
+     * @return Booleano que indica se foi efetuada a autenticação com sucesso
      */
     public boolean autentificacao(String password){
         if (this.password.equals(password)) {

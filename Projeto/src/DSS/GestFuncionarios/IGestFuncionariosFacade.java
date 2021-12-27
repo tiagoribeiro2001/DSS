@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Interface IGestFuncionariosFacade que contém os seguintes métodos
  */
-public interface IGestFuncionariosFacade {
+public interface IGestFuncionariosFacade{
     /**
      * Método que regista um Funcionario no sistema
      * @param username Username do Funcionario
@@ -25,14 +25,14 @@ public interface IGestFuncionariosFacade {
      * @return Booleano que indica se o Funcionario foi autenticado com sucesso
      * @throws CredenciaisInvalidasException Exceção lançada quando as credenciais inseridas não coincidem com as de nenhum Funcionario registado no sistema
      */
-    boolean autenticaFuncionario (String username, String password) throws CredenciaisInvalidasException;
+    boolean autenticaFuncionario(String username, String password) throws CredenciaisInvalidasException;
 
     /**
      * Método que verifica se um Funcionario está autenticado
      * @param username Username do Funcionario
-     * @return Booleano que indica se o funcionario está autenticado
+     * @return Booleano que indica se o Funcionario está autenticado
      */
-    boolean isAutenticado (String username);
+    boolean isAutenticado(String username);
 
     /**
      * Método getter do mapa de GestFuncionarioFacade

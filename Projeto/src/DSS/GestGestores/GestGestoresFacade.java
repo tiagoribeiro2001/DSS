@@ -2,31 +2,33 @@ package DSS.GestGestores;
 
 import DSS.Exceptions.CredenciaisInvalidasException;
 import DSS.GestFuncionarios.Funcionario;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe GestGestoresFacade usada para representar uma coleção de Gestores no sistema
+ */
 public class GestGestoresFacade implements IGestGestoresFacade, Serializable {
 
     private Map<String, Gestor> gestores;
 
-    public GestGestoresFacade() {
+    public GestGestoresFacade(){
         this.gestores = new HashMap<>();
     }
 
-    public boolean isAutenticado(String username) {
+    public boolean isAutenticado(String username){
         if (this.gestores.containsKey(username))
             return this.gestores.get(username).isAutenticado();
         return false;
     }
 
-    public void registaGestor(String username, String password) {
+    public void registaGestor(String username, String password){
         Gestor g = new Gestor(username, password);
         this.gestores.put(g.getUsername(), g);
     }
 
-    public boolean registaGestor(Funcionario f) {
+    public boolean registaGestor(Funcionario f){
         if (!this.gestores.containsKey(f.getUsername())) {
             Gestor g = new Gestor(f.getUsername(), f.getPassword());
             this.gestores.put(g.getUsername(), g.clone());
@@ -35,7 +37,7 @@ public class GestGestoresFacade implements IGestGestoresFacade, Serializable {
         return false;
     }
 
-    public String toString() {
+    public String toString(){
         int i = 1;
         StringBuilder sb = new StringBuilder();
         for (String s : this.gestores.keySet()) {
@@ -45,7 +47,7 @@ public class GestGestoresFacade implements IGestGestoresFacade, Serializable {
     }
 
     //Autentica um gestor.
-    public boolean autenticaGestor(String username, String password) throws CredenciaisInvalidasException {
+    public boolean autenticaGestor(String username, String password) throws CredenciaisInvalidasException{
         if (this.gestores.containsKey(username)) {
             if (this.gestores.get(username).autenticacao(password))
                 return true;
