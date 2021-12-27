@@ -124,7 +124,7 @@ public class Orcamento implements Serializable{
      * Método toString da classe Orcamento
      * @return String do Orcamento
      */
-    public String toString() {
+    public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Problema: ").append(this.problema).append("\n");
         sb.append("ID: ").append(this.equipamento.getNifCliente()).append("\n");
@@ -135,5 +135,7 @@ public class Orcamento implements Serializable{
      * Método clone da classe Orcamento
      * @return Orcamento clonado
      */
-    public Orcamento clone() {return new Orcamento(this);}
+    public Orcamento clone(){
+        return new Orcamento(this);
+    }
 }
