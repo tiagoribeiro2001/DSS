@@ -1,5 +1,7 @@
 package DSS.GestOrcamentos;
 
+import java.util.LinkedHashMap;
+
 /**
  * Interface IGestOrcamentosFacade que contém os seguintes métodos
  */
@@ -9,6 +11,12 @@ public interface IGestOrcamentosFacade {
      * @param o Orcamento a ser adicionado
      */
     void addOrcamento(Orcamento o);
+
+    /**
+     * Método que obtém o mapa de orcamentos
+     * @return Mapa de orcamentos
+     */
+    LinkedHashMap<Integer, Orcamento> obtemListaOrcamentos();
 
     /**
      * Método que obtém o Orcamento que está à mais tempo no sistema
@@ -27,6 +35,20 @@ public interface IGestOrcamentosFacade {
      * @return Orcamento da reparação do equipamento
      */
     Orcamento getOrcamento (int nif);
+
+    /**
+     * Método que verifica se existe um orcamento para uma reparação de um Equipamento de um dado nif
+     * @param nif Nif do dono do Equipamento
+     * @return Booleano que indica se existe o orçamento
+     */
+    boolean existeOrcamento(int nif);
+
+    /**
+     * Método que obtém o valor orçamentado para a reparação de um Equipamento de um dado nif
+     * @param nif Nif do dono do Equipamento
+     * @return Valor orçamentado
+     */
+    double obtemOrcamento(int nif);
 
     /**
      * Método toString da classe GestOrcamentosFacade

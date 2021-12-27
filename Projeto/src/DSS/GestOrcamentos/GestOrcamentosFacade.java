@@ -17,6 +17,12 @@ public class GestOrcamentosFacade implements IGestOrcamentosFacade, Serializable
         this.orcamentos.put(o.getNif(), o.clone());
     }
 
+    public LinkedHashMap<Integer, Orcamento> obtemListaOrcamentos(){
+        LinkedHashMap<Integer, Orcamento> nova = new LinkedHashMap();
+        this.orcamentos.values().forEach(j -> nova.put(j.getNif(), j.clone()));
+        return nova;
+    }
+
     public Orcamento obtemOrcamentoMaisAntigo(){
         return this.orcamentos.entrySet().iterator().next().getValue().clone();
     }
@@ -27,6 +33,14 @@ public class GestOrcamentosFacade implements IGestOrcamentosFacade, Serializable
 
     public Orcamento getOrcamento(int nif){
         return this.orcamentos.get(nif);
+    }
+
+    public boolean existeOrcamento(int nif){
+        return this.orcamentos.containsKey(nif);
+    }
+
+    public double obtemOrcamento(int nif){
+        return this.orcamentos.get(nif).getValor();
     }
 
     public String toString(){
