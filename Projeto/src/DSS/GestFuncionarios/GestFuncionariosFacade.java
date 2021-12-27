@@ -56,6 +56,12 @@ public class GestFuncionariosFacade implements IGestFuncionariosFacade, Serializ
         return newFun;
     }
 
+    public Funcionario getFuncionario(String username) throws UsernameNaoExisteException{
+        if(this.funcionarios.containsKey(username))
+            return this.funcionarios.get(username);
+        throw new UsernameNaoExisteException("Erro: Username não está registado no sistema.");
+    }
+
     public void incrementaRecepcoes(String username){
         this.funcionarios.get(username).incRecepcoes();
     }

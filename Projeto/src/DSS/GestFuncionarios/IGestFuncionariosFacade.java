@@ -41,6 +41,14 @@ public interface IGestFuncionariosFacade{
     Map<String, Funcionario> getFuncionarios();
 
     /**
+     * Método getter de um Funcionario
+     * @param username Username do Funcionario
+     * @return Funcionario procurado
+     * @throws UsernameNaoExisteException Exceção lançada quando não é encontrado o Funcionario com o username dado
+     */
+    Funcionario getFuncionario(String username) throws UsernameNaoExisteException;
+
+    /**
      * Método que incrementa as recepções de equipamentos de um Funcionario
      * @param username Username do Funcionario
      */
