@@ -1,15 +1,18 @@
 package DSS.GestPedidosOrcamento;
 
 import DSS.Exceptions.PedidoOrcamentoInexistenteException;
-import DSS.GestOrcamentos.GestOrcamentosFacade;
-
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class GestPedidosOrcamentoFacade implements IGestPedidosOrcamentoFacade, Serializable {
+/**
+ * Classe GestPedidoOrcamentoFacade usada para representar uma coleção de pedidos de orçamento no sistema
+ */
+public class GestPedidosOrcamentoFacade implements IGestPedidosOrcamentoFacade, Serializable{
     private LinkedList<PedidoOrcamento> pedidosOrcamento;
 
-    public GestPedidosOrcamentoFacade() {this.pedidosOrcamento = new LinkedList<>();}
+    public GestPedidosOrcamentoFacade(){
+        this.pedidosOrcamento = new LinkedList<>();
+    }
 
     public void addPedidoOrcamento(PedidoOrcamento po) {
         this.pedidosOrcamento.add(po.clone());

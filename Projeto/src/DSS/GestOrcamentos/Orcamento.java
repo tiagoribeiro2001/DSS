@@ -27,7 +27,7 @@ public class Orcamento implements Serializable{
     }
 
     /**
-     * Constutor paramentrizado da classe Orcamento
+     * Constutor parametrizado da classe Orcamento
      * @param eq Equipamento a ser reparado
      * @param valor Custo da reparação
      * @param problema Problema que leva à reparação
