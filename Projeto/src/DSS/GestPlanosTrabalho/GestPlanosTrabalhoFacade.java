@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GestPlanosTrabalhoFacade implements IGestPlanosTrabalhoFacade, Serializable {
+/**
+ * Classe GestPlanosTrabalhoFacade usada para representar uma coleção de planos de trabalho no sistema
+ */
+public class GestPlanosTrabalhoFacade implements IGestPlanosTrabalhoFacade, Serializable{
     Map<Integer, PlanoTrabalho> planos;
     Map<Integer, PlanoTrabalho> planosRealizados;
 
