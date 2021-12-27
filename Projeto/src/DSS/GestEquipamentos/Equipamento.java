@@ -1,9 +1,11 @@
 package DSS.GestEquipamentos;
 
 import DSS.GestFuncionarios.Funcionario;
-
 import java.io.Serializable;
 
+/**
+ * Classe Equipamento usada para representar um equipamento no sistema
+ */
 public class Equipamento implements Serializable {
 
     private int nifCliente;
@@ -100,7 +102,7 @@ public class Equipamento implements Serializable {
 
     /**
      * Método toString da classe Equipamento
-     * @return String do equipamento
+     * @return String do Equipamento
      */
     public String toString(){
         StringBuilder sb = new StringBuilder("Equipamento {\n");

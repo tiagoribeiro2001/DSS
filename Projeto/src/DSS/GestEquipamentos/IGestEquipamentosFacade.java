@@ -3,9 +3,12 @@ package DSS.GestEquipamentos;
 import DSS.Exceptions.EquipamentoInexistenteException;
 import DSS.GestFuncionarios.Funcionario;
 
+/**
+ * Interface IGestEquipamentosFacade que contém os seguintes métodos
+ */
 public interface IGestEquipamentosFacade {
     /**
-     * Método que regista um equipamento que necessita de uma reparação normal no sistema
+     * Método que regista um Equipamento que necessita de uma reparação normal no sistema
      * @param nif Nif do cliente
      * @param fun Funcionário que reparou o equipamento
      * @param email Contacto do cliente (e-mail)

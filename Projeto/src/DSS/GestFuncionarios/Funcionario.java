@@ -1,9 +1,11 @@
 package DSS.GestFuncionarios;
 import DSS.GestEquipamentos.Equipamento;
 import DSS.GestTecnicos.Tecnico;
-
 import java.io.Serializable;
 
+/**
+ * Classe Funcionario usada para representar um funcionário de balcão presente no sistema
+ */
 public class Funcionario implements Serializable {
 
     private String username;
@@ -13,8 +15,10 @@ public class Funcionario implements Serializable {
     private boolean autentificacao;
     //private boolean disponivel;
 
-    //Construtor Funcioario
-    public Funcionario (String username, String password) {
+    /**
+     * Construtor parametrizado da classe Funcionario
+     */
+    public Funcionario(String username, String password){
         this.username = username;
         this.password = password;
         this.recepcoes = 0;
@@ -22,8 +26,11 @@ public class Funcionario implements Serializable {
         this.autentificacao = false;
     }
 
-    //Construtor a partir de objeto
-    public Funcionario (Funcionario f) {
+    /**
+     * Contrutor clone da classe Funcionario
+     * @param f Funcionario a ser copiado
+     */
+    public Funcionario(Funcionario f){
         this.username = f.getUsername();
         this.password = f.getPassword();
         this.recepcoes = f.getRecepcoes();
@@ -31,29 +38,52 @@ public class Funcionario implements Serializable {
         this.autentificacao = false;
     }
 
-    //Obtem username
-    public String getUsername() {
+    /**
+     * Método getter do username do Funcionario
+     * @return Username do Funcionario
+     */
+    public String getUsername(){
         return this.username;
     }
 
-    public String getPassword () {
+    /**
+     * Método getter da password do Funcionario
+     * @return Password do Funcionario
+     */
+    public String getPassword(){
         return this.password;
     }
 
-    //Obtem o número de recepcoes de equipamentos feitos pelo funcionario
+    /**
+     * Método getter do número de recepções de equipamentos efetuados pelo Funcionario
+     * @return Número de recepções
+     */
     public int getRecepcoes(){
         return this.recepcoes;
     }
 
-    //Obtem o número de entregas de equipamentos feitos pelo funcionario
+    /**
+     * Método getter do número de entregas de equipamentos efetuados pelo Funcionario
+     * @return Número de entregas
+     */
     public int getEntregas(){
         return this.entregas;
     }
 
-    public boolean isAutenticado () {return autentificacao;}
+    /**
+     * Método que verifica se um Funcionario está autenticado
+     * @return Booleano que indica se o funcionário está autenticado
+     */
+    public boolean isAutenticado(){
+        return autentificacao;
+    }
 
-    //Autentificação funcionário.
-    public boolean autentificacao (String password) {
+    /**
+     * Método que efetua a autenticação do Funcionario
+     * @param password Password do Funcionario
+     * @return Booleano que infica se foi efetuada a autenticação com sucesso
+     */
+    public boolean autentificacao(String password){
         if (this.password.equals(password)) {
             this.autentificacao = true;
             return true;
@@ -61,23 +91,25 @@ public class Funcionario implements Serializable {
         return false;
     }
 
-    public void regista_equipamento(Equipamento e, Tecnico tecnico){
-        // metodo que dado um equipamento regista-o no sistema
-    }
-
-    public void sem_confirmacao(Equipamento e){
-        //Se cliente não deu confirmação de orçamento por mais de 30 dias, orçamento é arquivado
-    }
-
+    /**
+     * Método que incrementa o número de recepções de equipamentos de um Funcionario
+     */
     public void incRecepcoes(){
         this.recepcoes = this.recepcoes + 1;
     }
 
+    /**
+     * Método que incrementa o número de entregas de equipamentos de um Funcionario
+     */
     public void incEntregas(){
         this.entregas = this.entregas + 1;
     }
 
-    public String toString() {
+    /**
+     * Método toString da classe Funcionario
+     * @return String do Funcionario
+     */
+    public String toString(){
         StringBuilder sb = new StringBuilder("Funcionario {\n");
         sb.append("\tUsername - ").append(username).append("\n");
         sb.append("\tRecepcoes - ").append(recepcoes).append("\n");
@@ -86,7 +118,11 @@ public class Funcionario implements Serializable {
         return sb.toString();
     }
 
-    public Funcionario clone () {
+    /**
+     * Método clone da classe Funcionario
+     * @return Funcionario clonado
+     */
+    public Funcionario clone(){
         return new Funcionario(this);
     }
 }
