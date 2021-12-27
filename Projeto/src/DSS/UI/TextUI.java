@@ -1,4 +1,5 @@
 package DSS.UI;
+
 import DSS.Exceptions.*;
 import DSS.GestEquipamentos.*;
 import DSS.GestFuncionarios.*;
@@ -8,12 +9,13 @@ import DSS.GestPagamentos.*;
 import DSS.GestPedidosOrcamento.*;
 import DSS.GestPlanosTrabalho.*;
 import DSS.GestTecnicos.*;
-
 import java.io.Serializable;
 import java.util.*;
-
 import static java.lang.Math.abs;
 
+/**
+ * Classe TextUI que trata da apresentação da UI a quem irá utilizar a aplicação
+ */
 public class TextUI implements Serializable {
     private IGestFuncionariosFacade funcionarios;
     private IGestGestoresFacade gestores;
@@ -26,7 +28,9 @@ public class TextUI implements Serializable {
     private static Scanner scanner = new Scanner(System.in);
     private String username;
 
-
+    /**
+     * Construtor vazio da classe TextUI
+     */
     public TextUI() {
         this.funcionarios = new GestFuncionariosFacade();
         this.gestores = new GestGestoresFacade();
@@ -39,6 +43,9 @@ public class TextUI implements Serializable {
         this.username = "";
     }
 
+    /**
+     * Método que irá correr o aplicação
+     */
     public void run() {
         System.out.println("+-----------------------------------------------------+");
         System.out.println("| Bem vindo ao Sistema de Reparações de dispositivos! |");
@@ -47,6 +54,9 @@ public class TextUI implements Serializable {
         System.out.println("Até à próxima!");
     }
 
+    /**
+     * Método que apresenta o menú principal
+     */
     private void menuPrincipal() {
         Menu menu = new Menu(new String[]{
                 "Registar novo utilizador",
@@ -66,6 +76,9 @@ public class TextUI implements Serializable {
         menu.run();
     }
 
+    /**
+     * Método que apresenta o menú quando um Funcionario está autenticado
+     */
     private void menuFuncionario() {
         Menu menu = new Menu(new String[]{
                 "Registar recebimento de dispositivo",
@@ -79,6 +92,9 @@ public class TextUI implements Serializable {
         menu.run();
     }
 
+    /**
+     * Método que apresenta o menú quando um Tecnico está autenticado
+     */
     private void menuTecnico() {
         Menu menu = new Menu(new String[]{
                 "Registar orçamento no sistema",
@@ -92,6 +108,9 @@ public class TextUI implements Serializable {
         menu.run();
     }
 
+    /**
+     * Método que apresenta o menú quando um Gestor está autenticado
+     */
     private void menuGestor() {
         Menu menu = new Menu(new String[]{
                 "Aceder a lista de reparações por técnico.",
@@ -109,10 +128,11 @@ public class TextUI implements Serializable {
 
     //---------------- MÉTODOS AUXILIARES -----------------//
 
-    /*Registo de utilizador (inicialmente é automaticamente registado como Funcionário de balcão. O gestor depois trata
-    de conceder as autorizações de gestor / técnico).
+    /**
+     * Registo de utilizador (inicialmente é automaticamente registado como Funcionário de balcão. O gestor depois trata
+     * de conceder as autorizações de gestor / técnico).
     */
-    private void registarUser() {
+    private void registarUser(){
         try {
             System.out.println("Por favor insira um nome de utilizador: ");
             String username = scanner.nextLine();
@@ -126,8 +146,10 @@ public class TextUI implements Serializable {
         }
     }
 
-    //Autenticar funcionário.
-    private void autenticarFuncionario() {
+    /**
+     * Método que faz a autenticação de um Funcionario
+     */
+    private void autenticarFuncionario(){
         try {
             System.out.println("Por favor indique o seu username: ");
             String username = scanner.nextLine();
@@ -143,8 +165,10 @@ public class TextUI implements Serializable {
         }
     }
 
-    //Autenticar Gestor.
-    private void autenticarGestor (){
+    /**
+     * Método que faz a autenticação de um Gestor
+     */
+    private void autenticarGestor(){
         try {
             System.out.println("Por favor indique o seu username: ");
             String username = scanner.nextLine();
@@ -160,7 +184,9 @@ public class TextUI implements Serializable {
         }
     }
 
-    //Autenticar Técnico.
+    /**
+     * Método que faz a autenticação de um Tecnico
+     */
      private void autenticarTecnico() {
         try {
             System.out.println("Por favor indique o seu username: ");
@@ -178,8 +204,11 @@ public class TextUI implements Serializable {
     }
 
     // ----------------- Auxiliares menu funcionario -----------------------//
-    //Regista o recebimento do dspositivo
-    private void registarRecDispositivo (){
+
+    /**
+     * Método que regista o recebimento de um Equipamento
+     */
+    private void registarRecDispositivo(){
         //Verifica que o funcionário está autenticado.
         if (this.funcionarios.isAutenticado(this.username)) {
             try {
@@ -217,7 +246,10 @@ public class TextUI implements Serializable {
         }
     }
 
-    //Regista um pedido de orçamento.
+    /**
+     * Método que regista um pedido de orçamento
+     * @param nif Nif do dono do Equipamento
+     */
     private void registarPedidoOrcamento (int nif) {
         //Verifica que o funcionário está autenticado.
         if (this.funcionarios.isAutenticado(this.username)) {
@@ -237,8 +269,10 @@ public class TextUI implements Serializable {
             System.out.println("\033[0;31mErro: O funcionário deverá estar autenticado.\033[0m");
     }
 
-    //Regista entrega do dispositivo.
-    private void registarEntregaDispositivo() {
+    /**
+     * Método que regista a entrega de um Equipamento
+     */
+    private void registarEntregaDispositivo(){
         //Verifica que o funcionario esta autenticado.
         if(this.funcionarios.isAutenticado(this.username)) {
             try {
@@ -262,7 +296,10 @@ public class TextUI implements Serializable {
             System.out.println("\033[0;31mErro: O funcionário deverá estar registado. \033[0m");
     }
 
-    private void registarPagamentoReparacao () {
+    /**
+     * Método que regista o pagamento de uma reparação
+     */
+    private void registarPagamentoReparacao(){
         //Verifica que o funcionario esta autenticado.
         if (this.funcionarios.isAutenticado(this.username)) {
             System.out.println("Por favor insira o nif do cliente: ");
@@ -300,6 +337,11 @@ public class TextUI implements Serializable {
 
     //------------------ Auxiliares menu tecnico -----------------------//
 
+    /**
+     * Método que apresenta o menú quando é registado um Orcamento
+     * @param e Equipamento a qual está a ser orçaemntada a reparação
+     * @return PlanoTrabalho da reparação
+     */
     private PlanoTrabalho menuOrcamento(Equipamento e) {
         PlanoTrabalho pt = new PlanoTrabalho(e.clone());
         String res = "";
@@ -325,6 +367,9 @@ public class TextUI implements Serializable {
         return pt;
     }
 
+    /**
+     * Método que regista um Orcamento
+     */
     private void registarOrcamento () {
         if (this.tecnicos.isAutenticado(this.username)) {
             try {
@@ -351,6 +396,10 @@ public class TextUI implements Serializable {
         }
     }
 
+    /**
+     * Método que regista uma reparação
+     * @throws EquipamentoInexistenteException Exceção lanaçda quando não existem equipamentos para reparar
+     */
     private void registarReparacao () throws EquipamentoInexistenteException {
         if (this.tecnicos.isAutenticado(this.username)) {
             if (!this.equipamentos.isNaoReparadosEmpty()) {
@@ -416,6 +465,10 @@ public class TextUI implements Serializable {
         }
     }
 
+    /**
+     * Método que regista uma reparação urgente
+     * @throws EquipamentoInexistenteException Exceção lanaçda quando não existem equipamentos para reparar
+     */
     private void registarReparacaoUrgente () throws EquipamentoInexistenteException {
         double custoReal = 0.0;
         if (!this.equipamentos.isNaoReparadosEmpty()) {
@@ -477,7 +530,11 @@ public class TextUI implements Serializable {
     }
 
     // ------------------- Auxiliares menu gestor --------------------//
-    private void acederListaReparacoes () {
+
+    /**
+     * Método que acede à lista de reparações de um Tecnico
+     */
+    private void acederListaReparacoes(){
         if (this.gestores.isAutenticado(this.username)) {
             if (!this.tecnicos.tecnicosIsEmpty()) {
                 System.out.println("Lista de Técnicos: ");
@@ -491,6 +548,9 @@ public class TextUI implements Serializable {
         }
     }
 
+    /**
+     * Método que acede à lista de recepções e entregas de equipamentos de um Funcionario
+     */
     private void acederListaRececoesEntregas () {
         if (this.gestores.isAutenticado(this.username)) {
             if (!this.funcionarios.funcionariosIsEmpty()) {
@@ -505,6 +565,9 @@ public class TextUI implements Serializable {
         }
     }
 
+    /**
+     * Método que acede à lista de intervenções efetuados por um Tecnico
+     */
     private void acederListaIntervencoes () {
         if (this.gestores.isAutenticado(this.username)) {
             if (!this.tecnicos.tecnicosIsEmpty()) {
@@ -523,9 +586,10 @@ public class TextUI implements Serializable {
             System.out.println("\033[0;31mErro: O gestor deverá estar autenticado.\033[0m");
     }
 
-
-
-    public void promoverFuncionario() {
+    /**
+     * Método que promove um Funcionario para Tecnico ou Gestor
+     */
+    public void promoverFuncionario(){
         if (this.gestores.isAutenticado(this.username)) {
             System.out.println("Insira o username do Funcionário que pretende promover:");
             String username = scanner.nextLine();
@@ -561,5 +625,4 @@ public class TextUI implements Serializable {
         else
             System.out.println("\033[0;31mErro: Gestor deverá estar autenticado.\033[0m");
     }
-
 }

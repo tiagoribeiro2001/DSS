@@ -1,9 +1,11 @@
 package DSS;
 
 import DSS.UI.TextUI;
-
 import java.io.*;
 
+/**
+ * Classe Main que trata da execução da aplicação
+ */
 public class Main {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
