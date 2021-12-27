@@ -7,6 +7,7 @@ import DSS.GestFuncionarios.Funcionario;
 import DSS.GestPlanosTrabalho.PlanoTrabalho;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +47,18 @@ public class GestTecnicosFacade implements IGestTecnicosFacade, Serializable {
 
     public boolean isAutenticado (String username) {
         return this.tecnicos.get(username).isAutenticado();
+    }
+
+    public boolean existe(String username) {
+        return this.tecnicos.containsKey(username);
+    }
+
+    public List<Equipamento> getEquipamentosReparados(String username) {
+        return this.tecnicos.get(username).getEquipamentosReparados();
+    }
+
+    public void registaTecnico(Tecnico t){
+        this.tecnicos.put(t.getUsername(), t.clone());
     }
 
     public void adicionaEquipamentosReparados(String username, Equipamento equip){

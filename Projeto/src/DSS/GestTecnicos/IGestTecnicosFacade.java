@@ -6,6 +6,8 @@ import DSS.GestEquipamentos.Equipamento;
 import DSS.GestFuncionarios.Funcionario;
 import DSS.GestPlanosTrabalho.PlanoTrabalho;
 
+import java.util.List;
+
 /**
  * Interface IGestTecnicosFacade que ocntém os seguintes métodos
  */
@@ -32,7 +34,27 @@ public interface IGestTecnicosFacade {
      * @param username Username do Tecnico
      * @return Booleano que indica se o Tecnico está autenticado
      */
-    boolean isAutenticado (String username);
+    boolean isAutenticado(String username);
+
+    /**
+     * Método que regista um Tecnico no sitema
+     * @param t Tecnico a registar
+     */
+    void registaTecnico(Tecnico t);
+
+    /**
+     * Método que verifica se existe um Tecnico com um dado username
+     * @param username Username a procurar
+     * @return Booleano que indica se o Tecnico existe
+     */
+    boolean existe(String username);
+
+    /**
+     * Método getter da lista de equipamentos reparados por um Tecnico
+     * @param username Username do Tecnico
+     * @return Lista de equipamentos reparados
+     */
+    List<Equipamento> getEquipamentosReparados(String username);
 
     /**
      * Método que adiciona um Equipamento à lista de equipamentos reparados de um dado Tecnico
@@ -61,14 +83,14 @@ public interface IGestTecnicosFacade {
      * @param username Username do Tecnico
      * @param tempo Tempo gasto em reparações
      */
-    void incrementaTempoGasto (String username, int tempo);
+    void incrementaTempoGasto(String username, int tempo);
 
     /**
      * Método que incrementa o desvio de tempo gasto em reparações de um dado Tecnico
      * @param username Username do Tecnico
      * @param tempo Desvio de tempo gasto em reprações
      */
-    void incrementaDesvioTempoGasto (String username, int tempo);
+    void incrementaDesvioTempoGasto(String username, int tempo);
 
     /**
      * Método que verifica se o mapa de técnicos do sistema está vazio
@@ -95,5 +117,5 @@ public interface IGestTecnicosFacade {
      * @param f Funcionario a registar como Tecnico
      * @return Booleano que indica se o registo foi efetuado com sucesso
      */
-    boolean registaTecnico (Funcionario f);
+    boolean registaTecnico(Funcionario f);
 }
