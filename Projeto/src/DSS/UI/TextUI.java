@@ -215,25 +215,29 @@ public class TextUI implements Serializable {
                 System.out.println("Insira o nif do cliente:");
                 int nif = scanner.nextInt();
                 scanner.nextLine();
-                System.out.println("Insira o email do cliente:");
-                String email = scanner.nextLine();
-                System.out.println("Pretende que seja realizado o Serviço Expresso?\n1- Sim\n2- Não");
-                int opcao = scanner.nextInt();
-                scanner.nextLine();
-                if (opcao == 1) {
-                    if (this.equipamentos.isNaoReparadosEmpty()) {
-                        this.equipamentos.registaEquipamentoExpresso(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, true);
+                if(!this.equipamentos.existeEquipamento(nif)) {
+                    System.out.println("Insira o email do cliente:");
+                    String email = scanner.nextLine();
+                    System.out.println("Pretende que seja realizado o Serviço Expresso?\n1- Sim\n2- Não");
+                    int opcao = scanner.nextInt();
+                    scanner.nextLine();
+                    if (opcao == 1) {
+                        if (this.equipamentos.isNaoReparadosEmpty()) {
+                            this.equipamentos.registaEquipamentoExpresso(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, true);
+                            this.funcionarios.incrementaRecepcoes(this.username);
+                            System.out.println("\033[0;32mPedido Expresso realizado com sucesso. \033[0m");
+                        } else
+                            System.out.println("\033[0;31mErro: Não há disponibilidade para realizar o serviço expresso. \033[0m");
+                    } else if (opcao == 2) {
+                        this.equipamentos.registaEquipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, false);
                         this.funcionarios.incrementaRecepcoes(this.username);
-                        System.out.println("\033[0;32mPedido Expresso realizado com sucesso. \033[0m");
-                    } else
-                        System.out.println("\033[0;31mErro: Não há disponibilidade para realizar o serviço expresso. \033[0m");
-                } else if (opcao == 2) {
-                    this.equipamentos.registaEquipamento(nif, this.funcionarios.getFuncionarios().get(username).clone(), email, false);
-                    this.funcionarios.incrementaRecepcoes(this.username);
-                    this.registarPedidoOrcamento(nif);
+                        this.registarPedidoOrcamento(nif);
+                    } else {
+                        System.out.println("\033[0;31mErro: Opção inválida. \033[0m");
+                    }
                 }
-                else {
-                    System.out.println("\033[0;31mErro: Opção inválida. \033[0m");
+                else{
+                    System.out.println("\033[0;31mErro: Já existe um equipamento com o mesmo nif que quer inserir. \033[0m");
                 }
             }
             catch (InputMismatchException e) {
@@ -242,7 +246,7 @@ public class TextUI implements Serializable {
             }
         }
         else {
-            System.out.println("\033[0;31mErro: O funcionário deverá estar autenticado para poder inserir um dispositivo. \033[0m");
+            System.out.println("\033[0;31mErro: O funcionário deverá estar autenticado para poder inserir um equipamento. \033[0m");
         }
     }
 
