@@ -55,7 +55,7 @@ public class TextUI implements Serializable {
     }
 
     /**
-     * Método que apresenta o menú principal
+     * Método que apresenta o menu principal
      */
     private void menuPrincipal() {
         Menu menu = new Menu(new String[]{
@@ -77,7 +77,7 @@ public class TextUI implements Serializable {
     }
 
     /**
-     * Método que apresenta o menú quando um Funcionario está autenticado
+     * Método que apresenta o menu quando um Funcionario está autenticado
      */
     private void menuFuncionario() {
         Menu menu = new Menu(new String[]{
@@ -93,7 +93,7 @@ public class TextUI implements Serializable {
     }
 
     /**
-     * Método que apresenta o menú quando um Tecnico está autenticado
+     * Método que apresenta o menu quando um Tecnico está autenticado
      */
     private void menuTecnico() {
         Menu menu = new Menu(new String[]{
@@ -109,7 +109,7 @@ public class TextUI implements Serializable {
     }
 
     /**
-     * Método que apresenta o menú quando um Gestor está autenticado
+     * Método que apresenta o menu quando um Gestor está autenticado
      */
     private void menuGestor() {
         Menu menu = new Menu(new String[]{
@@ -338,51 +338,39 @@ public class TextUI implements Serializable {
     //------------------ Auxiliares menu tecnico -----------------------//
 
     /**
-     * Método que apresenta o menú quando é registado um Orcamento
-     * @param e Equipamento a qual está a ser orçaemntada a reparação
-     * @return PlanoTrabalho da reparação
-     */
-    private PlanoTrabalho menuOrcamento(Equipamento e) {
-        PlanoTrabalho pt = new PlanoTrabalho(e.clone());
-        String res = "";
-        while (!res.equals("sair")) {
-            System.out.println("Insira um passo (Se pretender sair escreva \"sair\"):");
-            res = scanner.nextLine();
-            if (!res.equals("sair")) {
-                try {
-                    System.out.println("Insira um custo associado a dito passo:");
-                    double custo = scanner.nextDouble();
-                    scanner.nextLine();
-                    System.out.println("Insira uma duração (em minutos) associado a dito passo:");
-                    int tempo = scanner.nextInt();
-                    scanner.nextLine();
-                    pt.adicionaPasso(res, custo, tempo);
-                }
-                catch (InputMismatchException exc) {
-                    System.out.println("\033[0;31m" + "Erro: Input inválido." + "\033[0m");
-                    scanner.nextLine();
-                }
-            }
-        }
-        return pt;
-    }
-
-    /**
      * Método que regista um Orcamento
      */
     private void registarOrcamento () {
         if (this.tecnicos.isAutenticado(this.username)) {
             try {
-                PedidoOrcamento po = this.pedidosOrcamento.obtemPedido();
-
+                int nif = this.pedidosOrcamento.obtemPedido().getEquipamento().getNifCliente();
                 System.out.println("Problema do Dispositivo:");
-                System.out.println(po.getProblema());
+                System.out.println(this.pedidosOrcamento.obtemPedido().getProblema());
                 System.out.println("--------------------------------");
-                PlanoTrabalho pt = menuOrcamento(po.getEquipamento().clone());
-                pt.registaOrcamento(po.getProblema());
-                this.orcamentos.addOrcamento(pt.getOrcamento());
-                this.equipamentos.insereCustoReparacao(po.getEquipamento().getNifCliente(), pt.getOrcamento().getValor());
-                this.planosTrabalho.adicionaPlano(pt);
+                this.planosTrabalho.criaPlano(this.pedidosOrcamento.obtemPedido().getEquipamento().clone());
+                String res = "";
+                while (!res.equals("sair")) {
+                    System.out.println("Insira um passo (Se pretender sair escreva \"sair\"):");
+                    res = scanner.nextLine();
+                    if (!res.equals("sair")) {
+                        try {
+                            System.out.println("Insira um custo associado a dito passo:");
+                            double custo = scanner.nextDouble();
+                            scanner.nextLine();
+                            System.out.println("Insira uma duração (em minutos) associado a dito passo:");
+                            int tempo = scanner.nextInt();
+                            scanner.nextLine();
+                            this.planosTrabalho.adicionaPassoToPlano(nif, res, custo, tempo);
+                        }
+                        catch (InputMismatchException exc) {
+                            System.out.println("\033[0;31m" + "Erro: Input inválido." + "\033[0m");
+                            scanner.nextLine();
+                        }
+                    }
+                }
+                this.planosTrabalho.obterPlano(nif).registaOrcamento(this.pedidosOrcamento.obtemPedido().getProblema());
+                this.orcamentos.addOrcamento(this.planosTrabalho.obterPlano(nif).getOrcamento());
+                this.equipamentos.insereCustoReparacao(nif, this.planosTrabalho.obterPlano(nif).getOrcamento().getValor());
                 System.out.println("\033[0;32mOrçamento registado com sucesso.\033[0m");
                 this.pedidosOrcamento.removePedidoOrcamento();
                 //Talvez implementar para enviar email para o cliente.
@@ -409,23 +397,22 @@ public class TextUI implements Serializable {
                 System.out.println("REPARAÇÃO DE DISPOSITIVO\n");
                 System.out.println("Identificador do dispositivo: " + nif);
                 System.out.println("Plano de trabalhos:");
-                PlanoTrabalho pt = this.planosTrabalho.obterPlano(nif);
-                PlanoTrabalho planoReal = new PlanoTrabalho(equipamentos.obtemEquipamento(nif));
+                this.planosTrabalho.criaPlanoRealizado(this.equipamentos.obtemEquipamento(nif));
                 try {
-                    for (int i = 0; i < pt.tamanhoPlano(); i++) {
+                    for (int i = 0; i < this.planosTrabalho.obterPlano(nif).tamanhoPlano(); i++) {
                         System.out.println("\n--------------------//----------------------");
-                        System.out.println(pt.getPlano().get(i).toString());
+                        System.out.println(this.planosTrabalho.obterPlano(nif).getPlano().get(i).toString());
                         System.out.println("Indique o tempo gasto para a tarefa (em minutos): ");
                         int gasto = scanner.nextInt();
                         scanner.nextLine();
-                        int gastoPlano = pt.getTempo(i);
+                        int gastoPlano = this.planosTrabalho.getTempoPasso(nif, i);
                         this.tecnicos.incrementaDesvioTempoGasto(this.username, abs(gasto - gastoPlano));
                         this.tecnicos.incrementaTempoGasto(this.username, gasto);
                         System.out.println("Insira o custo atribuido à realização deste passo: ");
                         double temp = scanner.nextDouble();
                         scanner.nextLine();
                         custoReal += temp;
-                        planoReal.adicionaPasso(pt.getPlano().get(i).getPasso(), temp, gasto);
+                        this.planosTrabalho.adicionaPassoToPlanoRealizado(nif, this.planosTrabalho.obterPlano(nif).getPlano().get(i).getPasso(), temp, gasto);
                     }
                     System.out.println("\n--------------------//----------------------");
                     if (custoReal > this.orcamentos.obtemOrcamentoMaisAntigo().getValor()*1.20)
@@ -435,10 +422,11 @@ public class TextUI implements Serializable {
                         scanner.nextLine();
 
                         if (opcao == 1) {
+                            this.equipamentos.insereCustoReparacao(nif, custoReal);
                             this.equipamentos.consertaEquipamento(this.orcamentos.obtemOrcamentoMaisAntigo().getEquipamento().getNifCliente());
                             this.tecnicos.adicionaEquipamentosReparados(this.username, this.orcamentos.obtemOrcamentoMaisAntigo().getEquipamento().clone());
                             this.orcamentos.removeOrcamentoMaisAntigo();
-                            this.tecnicos.addPlanoTrabalho(username, nif, planoReal);
+                            this.tecnicos.addPlanoTrabalho(username, nif, this.planosTrabalho.obterPlanoRealizado(nif));
                             System.out.println("\033[0;32mServiço de reparação registado com sucesso.\033[0m");
                         } else
                             System.out.println("\033[0;31mServiço de reparação não foi registado.\033[0m");
@@ -449,11 +437,12 @@ public class TextUI implements Serializable {
                 }
             }
             else if (!this.equipamentos.isExpressoEmpty()) {
+                int nif = this.equipamentos.getExpressoMaisAntigo().getNifCliente();
                 System.out.println("[Serviço Expresso]: Insira o preço pelo serviço realizado: ");
                 double preco = scanner.nextDouble(); scanner.nextLine();
-                this.equipamentos.insereCustoReparacao(this.equipamentos.getExpressoMaisAntigo().getNifCliente(), preco);
-                this.tecnicos.adicionaEquipamentosReparadosExpresso(this.username, equipamentos.obtemEquipamento(this.equipamentos.getExpressoMaisAntigo().getNifCliente()).clone());
-                this.equipamentos.consertaEquipamento(this.equipamentos.getExpressoMaisAntigo().getNifCliente());
+                this.equipamentos.insereCustoReparacao(nif, preco);
+                this.tecnicos.adicionaEquipamentosReparadosExpresso(this.username, equipamentos.obtemEquipamento(nif).clone());
+                this.equipamentos.consertaEquipamento(nif);
                 System.out.println("\033[0;32mServiço de reparação expresso registado com sucesso.\033[0m");
             }
             else {
@@ -482,22 +471,21 @@ public class TextUI implements Serializable {
                     System.out.println("REPARAÇÃO DE DISPOSITIVO\n");
                     System.out.println("Identificador do dispositivo: " + nif);
                     System.out.println("Plano de trabalhos:");
-                    PlanoTrabalho pt = this.planosTrabalho.obterPlano(nif);
-                    PlanoTrabalho planoReal = new PlanoTrabalho(equipamentos.obtemEquipamento(nif));
-                    for (int i = 0; i < pt.tamanhoPlano(); i++) {
+                    this.planosTrabalho.criaPlanoRealizado(this.equipamentos.obtemEquipamento(nif));
+                    for (int i = 0; i < this.planosTrabalho.obterPlano(nif).tamanhoPlano(); i++) {
                         System.out.println("\n--------------------//----------------------");
-                        System.out.println(pt.getPlano().get(i).toString());
+                        System.out.println(this.planosTrabalho.obterPlano(nif).getPlano().get(i).toString());
                         System.out.println("Indique o tempo gasto para a tarefa (em minutos): ");
                         int gasto = scanner.nextInt();
                         scanner.nextLine();
-                        int gastoPlano = pt.getTempo(i);
+                        int gastoPlano = this.planosTrabalho.getTempoPasso(nif, i);
                         this.tecnicos.incrementaDesvioTempoGasto(this.username, abs(gasto - gastoPlano));
                         this.tecnicos.incrementaTempoGasto(this.username, gasto);
                         System.out.println("Insira o custo atribuido à realização deste passo: ");
                         double temp = scanner.nextDouble();
                         scanner.nextLine();
                         custoReal += temp;
-                        planoReal.adicionaPasso(pt.getPlano().get(i).getPasso(), temp, gasto);
+                        this.planosTrabalho.adicionaPassoToPlanoRealizado(nif, this.planosTrabalho.obterPlano(nif).getPlano().get(i).getPasso(), temp, gasto);
                     }
                     System.out.println("\n--------------------//----------------------");
                     if (custoReal > this.orcamentos.getOrcamento(nif).getValor() * 1.20)
@@ -507,11 +495,11 @@ public class TextUI implements Serializable {
                     int opcao = scanner.nextInt();
                     scanner.nextLine();
                     if (opcao == 1) {
-                        this.equipamentos.consertaEquipamento(this.orcamentos.obtemOrcamentoMaisAntigo().getEquipamento().getNifCliente());
-                        this.tecnicos.adicionaEquipamentosReparados(this.username, this.orcamentos.obtemOrcamentoMaisAntigo().getEquipamento().clone());
-                        this.orcamentos.removeOrcamentoMaisAntigo();
-                        this.planosTrabalho.adicionaPlanoRealizado(planoReal);
-                        this.tecnicos.addPlanoTrabalho(username, nif, planoReal);
+                        this.equipamentos.insereCustoReparacao(nif, custoReal);
+                        this.equipamentos.consertaEquipamento(nif);
+                        this.tecnicos.adicionaEquipamentosReparados(this.username, this.equipamentos.obtemEquipamento(nif).clone());
+                        this.orcamentos.removeOrcamento(nif);
+                        this.tecnicos.addPlanoTrabalho(username, nif, this.planosTrabalho.obterPlanoRealizado(nif));
                         System.out.println("\033[0;32mServiço de reparação registado com sucesso.\033[0m");
                     } else
                         System.out.println("\033[0;31mA reparação não foi concluída.\033[0m");
@@ -522,6 +510,9 @@ public class TextUI implements Serializable {
             catch (InputMismatchException e) {
                 System.out.println("\033[0;31m" + "Erro: Input inválido." + "\033[0m");
                 scanner.nextLine();
+            }
+            catch (EquipamentoInexistenteException e){
+                System.out.println("\033[0;31m" + e.getMessage() + "\033[0m");
             }
         }
         else {

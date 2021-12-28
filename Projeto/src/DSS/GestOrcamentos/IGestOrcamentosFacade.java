@@ -25,6 +25,12 @@ public interface IGestOrcamentosFacade {
     Orcamento obtemOrcamentoMaisAntigo();
 
     /**
+     * Método que remove um Orcamento dado um nif
+     * @param nif Nif do dono do equipamento
+     */
+    void removeOrcamento(int nif);
+
+    /**
      * Método que remove o Orcamento que está à mais tempo no sistema
      */
     void removeOrcamentoMaisAntigo();

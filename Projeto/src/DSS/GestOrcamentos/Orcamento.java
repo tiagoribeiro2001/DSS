@@ -59,6 +59,7 @@ public class Orcamento implements Serializable{
         this.nif = eq.getNifCliente();
         this.equipamento = eq;
         this.problema = "";
+        this.valor = eq.getCustoReparacao();
     }
 
     /**

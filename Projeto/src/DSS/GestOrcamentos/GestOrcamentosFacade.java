@@ -27,6 +27,10 @@ public class GestOrcamentosFacade implements IGestOrcamentosFacade, Serializable
         return this.orcamentos.entrySet().iterator().next().getValue().clone();
     }
 
+    public void removeOrcamento(int nif){
+        this.orcamentos.remove(nif);
+    }
+
     public void removeOrcamentoMaisAntigo(){
         this.orcamentos.remove(this.orcamentos.entrySet().iterator().next().getKey());
     }
